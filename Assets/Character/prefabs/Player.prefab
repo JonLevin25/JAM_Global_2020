@@ -431,7 +431,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &6101633665799684042
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -457,7 +457,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.4
 --- !u!95 &6042737860437781849
 Animator:
   serializedVersion: 3
