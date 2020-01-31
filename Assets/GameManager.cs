@@ -20,9 +20,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        corkManager = transform.GetComponentInChildren<CorkManager>();
+        pipeManager = transform.GetComponentInChildren<PipeManager>();
+        waterLevelController = transform.GetComponentInChildren<WaterLevelController>();
+        gameOverUI = transform.GetComponentInChildren<GameOverController>();
+
         gameOverUI.gameObject.SetActive(false);
     }
-    
+
     private IEnumerator Start()
     {
         pipeManager.OnPipeFixed += PipeFixedHandler;
