@@ -76,7 +76,7 @@ namespace Character.Scripts
 			{
 				stateMachine.ChangeState(ladderState);
 			}
-			else if (stateMachine.currentState != groundState && isGrounded)
+			else if (stateMachine.currentState != ladderState && stateMachine.currentState != groundState && isGrounded)
 			{
 				stateMachine.ChangeState(groundState);
 			}
@@ -154,6 +154,9 @@ namespace Character.Scripts
 				{
 					Transform corkTransform;
 					(corkTransform = currentCork.transform).SetParent(corkPivot);
+					corkTransform.parent = corkPivot;
+					Physics2D.IgnoreCollision(collider, currentCork.hardCollider);
+					currentCork.rigidbody.bodyType = RigidbodyType2D.Kinematic;
 					corkTransform.localPosition = Vector3.zero;
 					currentCork.player = this;
 				}
