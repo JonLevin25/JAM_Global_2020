@@ -76,7 +76,7 @@ namespace Character.Scripts
 			{
 				stateMachine.ChangeState(ladderState);
 			}
-			else if (stateMachine.currentState != groundState && isGrounded)
+			else if (stateMachine.currentState != ladderState && stateMachine.currentState != groundState && isGrounded)
 			{
 				stateMachine.ChangeState(groundState);
 			}
