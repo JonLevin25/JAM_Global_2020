@@ -16,6 +16,7 @@ public class WaterLevelController : MonoBehaviour
     private float _velocity;
 
     public int FloodedFloorCount => Mathf.FloorToInt(FloorHelper.Instance.GetFloor(_currWaterLevel));
+    public float CurrWaterLevel => _currWaterLevel;
 
     private void Awake()
     {
