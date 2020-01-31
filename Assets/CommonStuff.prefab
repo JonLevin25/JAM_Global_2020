@@ -189,7 +189,7 @@ MonoBehaviour:
   player: {fileID: 0}
   waterLevelController: {fileID: 6458855464092422003}
   pipeManager: {fileID: 1275115653230650164}
-  corkManager: {fileID: 0}
+  corkManager: {fileID: 9215001842640664501}
   gameOverUI: {fileID: 7628860648979139800}
   firstPipeLeakTime: 2
   fixToNextLeakTime: 1.5
@@ -259,6 +259,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WaterController
+      objectReference: {fileID: 0}
+    - target: {fileID: 8670798981927136846, guid: e96910afaac4013438839a5d53d1c315,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e96910afaac4013438839a5d53d1c315, type: 3}
