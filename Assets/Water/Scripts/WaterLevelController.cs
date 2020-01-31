@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WaterLevelController : MonoBehaviour
 {
@@ -15,6 +14,8 @@ public class WaterLevelController : MonoBehaviour
     private float _currWaterLevel;
     private float _targetWaterLevel;
     private float _velocity;
+
+    public int FloodedFloorCount => Mathf.FloorToInt(FloorHelper.Instance.GetFloor(_currWaterLevel));
 
     private void Awake()
     {

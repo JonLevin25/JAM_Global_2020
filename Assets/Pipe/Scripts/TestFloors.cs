@@ -50,11 +50,11 @@ public class TestFloors : MonoBehaviour
     
     public void FindPipes()
     {
-        pipesFound = FloorManager.Instance.FindObjectsOnFloor<Pipe>(floor).ToArray();
+        pipesFound = FloorHelper.Instance.FindObjectsOnFloor<Pipe>(floor).ToArray();
     }
 
     public void FindAllPipes()
     {
-        allPipes = FloorManager.Instance.GetObjectsByFloors<Pipe>().Select(pipes => new TestPipeFloor(pipes)).ToArray();
+        allPipes = FloorHelper.Instance.GetObjectsByFloors<Pipe>().Select(pipes => new TestPipeFloor(pipes)).ToArray();
     }
 }

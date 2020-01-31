@@ -42,7 +42,7 @@ public class FloorHelper : MonoBehaviour
         var objectsInScene = FindObjectsOfType<T>();
         foreach (var obj in objectsInScene)
         {
-            var floor = GetFloor(obj);
+            var floor = Mathf.FloorToInt(GetFloor(obj));
             if (floor == -1) continue;
             
             result[floor].Add(obj);
@@ -51,7 +51,7 @@ public class FloorHelper : MonoBehaviour
         return result;
     }
 
-    public int GetFloor<T>(T component) where T : Component
+    public float GetFloor<T>(T component) where T : Component
     {
         var pos = component.transform.position;
         var yPos = pos.y;
@@ -59,18 +59,25 @@ public class FloorHelper : MonoBehaviour
         return GetFloor(yPos);
     }
 
-    public int GetFloor(float yPos)
+    public float GetFloor(float yPos)
     {
         // if below ground floor
         if (yPos < _floors[0]) return -1;
         
         for (var i = 0; i < _floors.Length; i++)
         {
+            // For last floor - dont calculate percent, return int
             var isTopMost = i == _floors.Length - 1;
+            if (isTopMost) return i;
             
-            var top = isTopMost ? Mathf.Infinity : _floors[i + 1];
-            
-            if (yPos < top) return i;
+            var top = _floors[i + 1];
+            var bottom = _floors[i];
+
+            if (yPos < top)
+            {
+                var floorPercent = Mathf.InverseLerp(bottom, top, yPos);
+                return i + floorPercent;
+            }
         }
 
         Debug.LogError("How did this happen?");

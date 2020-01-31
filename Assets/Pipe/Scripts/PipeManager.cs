@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,22 +11,24 @@ public class PipeManager : MonoBehaviour
     [SerializeField] private bool _debug;
     [SerializeField] private int[] _debugFloors;
     
-    public static PipeManager Instance;
+    // public static PipeManager Instance;
     
     private IReadOnlyList<List<Pipe>> _pipesByFloor;
     private readonly Stack<Pipe> _fixedPipes = new Stack<Pipe>();
     private readonly HashSet<Pipe> _currLeakingPipes = new HashSet<Pipe>();
 
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Debug.LogError("Another singleton instance exists! this should not happen");
-            Destroy(Instance);
-        }
+    public event Action<Pipe> OnPipeFixed;
 
-        Instance = this;
-    }
+    // private void Awake()
+    // {
+    //     if (Instance != null)
+    //     {
+    //         Debug.LogError("Another singleton instance exists! this should not happen");
+    //         Destroy(Instance);
+    //     }
+    //
+    //     Instance = this;
+    // }
     
     private void OnGUI()
     {
@@ -59,17 +62,23 @@ public class PipeManager : MonoBehaviour
 
     private void Start()
     {
-        _pipesByFloor = FloorManager.Instance.GetObjectsByFloors<Pipe>()
+        _pipesByFloor = FloorHelper.Instance.GetObjectsByFloors<Pipe>()
             .Select(pipes => pipes.ToList()).ToList();
 
         foreach (var pipe in _pipesByFloor.SelectMany(pipes => pipes))
         {
-            pipe.OnPipeFixed += OnPipeFixed;
+            pipe.OnPipeFixed += PipeFixedHandler;
         }
     }
 
-    public void LeakRandomPipe(IEnumerable<int> fromFloors)
+    public void LeakRandomPipe(params int[] fromFloors)
     {
+        if (fromFloors.Length == 0)
+        {
+            Debug.LogError("LeakRandomPipe called with no floors!");
+            return;
+        }
+        
         var allPipesOnFloors = fromFloors.SelectMany(i => _pipesByFloor[i]);
         var relevantPipes = allPipesOnFloors.Where(PipeFilterCondition).ToArray(); // disregard fixed or currently leaking pipes
 
@@ -78,6 +87,7 @@ public class PipeManager : MonoBehaviour
             Debug.Log($"{GetType()}.{nameof(LeakRandomPipe)}: no relevant pipes found!");
             return;
         }
+        
         var pipeIdx = Random.Range(0, relevantPipes.Length - 1);
         var selectedPipe = relevantPipes[pipeIdx];
         
@@ -91,11 +101,12 @@ public class PipeManager : MonoBehaviour
         _currLeakingPipes.Add(pipe);
     }
 
-    private void OnPipeFixed(Pipe pipe)
+    private void PipeFixedHandler(Pipe pipe)
     {
         pipe.StopFlow();
         _fixedPipes.Push(pipe);
         _currLeakingPipes.Remove(pipe);
+        OnPipeFixed?.Invoke(pipe);
     }
 
     private bool PipeFilterCondition(Pipe pipe)
