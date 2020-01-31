@@ -374,7 +374,7 @@ MonoBehaviour:
   ladderSpeed: 1
   totalSpeedMultiplier: 3
   jumpForce: 200
-  corkPivot: {fileID: 0}
+  corkPivot: {fileID: 1060077583823919332}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 512

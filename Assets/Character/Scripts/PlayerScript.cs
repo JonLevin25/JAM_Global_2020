@@ -154,6 +154,9 @@ namespace Character.Scripts
 				{
 					Transform corkTransform;
 					(corkTransform = currentCork.transform).SetParent(corkPivot);
+					corkTransform.parent = corkPivot;
+					Physics2D.IgnoreCollision(collider, currentCork.hardCollider);
+					currentCork.rigidbody.simulated = false;
 					corkTransform.localPosition = Vector3.zero;
 					currentCork.player = this;
 				}
