@@ -1,18 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class PipeManager : MonoBehaviour
 {
     [SerializeField] private bool _debug;
+    [SerializeField] private int[] _debugFloors;
     
-    private IReadOnlyList<List<Pipe>> _pipesByFloor;
-    private readonly HashSet<Pipe> _fixedPipe = new HashSet<Pipe>();
-    private HashSet<Pipe> _currLeakingPipes = new HashSet<Pipe>();
-
     public static PipeManager Instance;
     
+    private IReadOnlyList<List<Pipe>> _pipesByFloor;
+    private readonly HashSet<Pipe> _fixedPipes = new HashSet<Pipe>();
+    private readonly HashSet<Pipe> _currLeakingPipes = new HashSet<Pipe>();
+
     private void Awake()
     {
         if (Instance != null)
@@ -27,7 +30,12 @@ public class PipeManager : MonoBehaviour
     private void OnGUI()
     {
         if (!_debug) return;
-        
+
+        if (GUILayout.Button("LeakRandom"))
+        {
+            LeakRandomPipe(_debugFloors);
+        }
+
         var style = new GUIStyle
         {
             fontSize = 20
@@ -42,12 +50,13 @@ public class PipeManager : MonoBehaviour
         GUILayout.Space(25f);
         
         GUILayout.Label("Fixed Pipes:", style);
-        foreach (var pipe in _fixedPipe)
+        foreach (var pipe in _fixedPipes)
         {
             GUILayout.Label(pipe.name, style);
         }
+        
     }
-    
+
     private void Start()
     {
         _pipesByFloor = FloorManager.Instance.GetObjectsByFloors<Pipe>()
@@ -59,14 +68,20 @@ public class PipeManager : MonoBehaviour
         }
     }
 
-    public void LeakRandomPipe(params int[] fromFloors)
+    public void LeakRandomPipe(IEnumerable<int> fromFloors)
     {
         var allPipesOnFloors = fromFloors.SelectMany(i => _pipesByFloor[i]);
         var relevantPipes = allPipesOnFloors.Where(NotFixedOrLeaking).ToArray(); // disregard fixed or currently leaking pipes
 
+        if (relevantPipes.Length == 0)
+        {
+            Debug.Log($"{GetType()}.{nameof(LeakRandomPipe)}: no relevant pipes found!");
+            return;
+        }
         var pipeIdx = Random.Range(0, relevantPipes.Length - 1);
         var selectedPipe = relevantPipes[pipeIdx];
         
+        Debug.Log($"{GetType()}.{nameof(LeakRandomPipe)}: selected pipe ({selectedPipe.name})");
         LeakPipe(selectedPipe);
     }
 
@@ -79,12 +94,12 @@ public class PipeManager : MonoBehaviour
     private void OnPipeFixed(Pipe pipe)
     {
         pipe.StopFlow();
-        _fixedPipe.Add(pipe);
+        _fixedPipes.Add(pipe);
         _currLeakingPipes.Remove(pipe);
     }
 
     private bool NotFixedOrLeaking(Pipe pipe) => !IsFixed(pipe) && !IsLeaking(pipe);
 
-    private bool IsFixed(Pipe pipe) => _fixedPipe.Contains(pipe);
+    private bool IsFixed(Pipe pipe) => _fixedPipes.Contains(pipe);
     private bool IsLeaking(Pipe pipe) => _currLeakingPipes.Contains(pipe);
 }
