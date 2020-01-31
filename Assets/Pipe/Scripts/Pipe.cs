@@ -32,25 +32,56 @@ public struct FlowPhase
     public float startTime;
     public Color testColor;
     public float rate;
+    
+}
+public enum LeakState
+{
+    NoLeak = 0,
+    Leaking = 1,
+    Sealed = 2
 }
 
 public class Pipe : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _rend;
+    [SerializeField] LeakState LeakingStatus;
     [SerializeField] private FlowPhase[] phases;
+    private Animator _myAnim;
+    private SpriteRenderer _rend;
     private Coroutine _flowRoutine;
     private float _flowRate;
     private bool _isLeaking;
+    int _CurrentLeakingStatus = 0;
+    int _LastLeakingStatus = 0;
 
     public event Action<Pipe> OnPipeFixed;
     public bool IsLeaking => _isLeaking;
 
+    
+    private void Awake()
+    {
+        _rend = GetComponent<SpriteRenderer>();
+        _myAnim = GetComponent<Animator>();
+
+    }
+
+    private void Start()
+    {
+        SetPipeState(LeakState.NoLeak);
+
+    }
     private void Update()
     {
         if (_flowRate > 0)
         {
             WaterLevelController.Instance.IncreaseWaterLevel(_flowRate * Time.deltaTime);
         }
+        if(_LastLeakingStatus!=_CurrentLeakingStatus)
+        {
+            _LastLeakingStatus = _CurrentLeakingStatus;
+            _myAnim.SetInteger("state", _LastLeakingStatus);
+
+        }
+
         
     }
 
@@ -63,6 +94,7 @@ public class Pipe : MonoBehaviour
     {
         _flowRoutine = StartCoroutine(FlowRoutine());
         _isLeaking = true;
+
     }
 
     public void StopFlow()
@@ -71,6 +103,7 @@ public class Pipe : MonoBehaviour
         _flowRate = 0;
         _rend.color = Color.white;
         _isLeaking = false;
+
     }
 
     private IEnumerator FlowRoutine()
@@ -86,6 +119,7 @@ public class Pipe : MonoBehaviour
             }
 
             SetPhase(phase);
+            
         }
     }
 
@@ -93,5 +127,11 @@ public class Pipe : MonoBehaviour
     {
         _flowRate = phase.rate;
         _rend.color = phase.testColor;
+    }
+
+    public void SetPipeState(LeakState state)
+    {
+        _CurrentLeakingStatus = (int)state;
+
     }
 }

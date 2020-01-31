@@ -99,6 +99,7 @@ public class PipeManager : MonoBehaviour
     {
         pipe.StartFlow();
         _currLeakingPipes.Add(pipe);
+        SetPipeState(pipe, LeakState.Leaking);
     }
 
     private void PipeFixedHandler(Pipe pipe)
@@ -107,6 +108,7 @@ public class PipeManager : MonoBehaviour
         _fixedPipes.Push(pipe);
         _currLeakingPipes.Remove(pipe);
         OnPipeFixed?.Invoke(pipe);
+        SetPipeState(pipe, LeakState.Sealed);
     }
 
     private bool PipeFilterCondition(Pipe pipe)
@@ -118,6 +120,11 @@ public class PipeManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void SetPipeState(Pipe p, LeakState l)
+    {
+        p.SetPipeState(l);
     }
 
     private bool IsFixed(Pipe pipe) => _fixedPipes.Contains(pipe);
