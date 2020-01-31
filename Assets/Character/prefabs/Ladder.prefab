@@ -121,5 +121,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22bbde070e021a74fa3816fca987cf0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCollider2Ds:
-  - {fileID: 0}
+  groundCollider2Ds: []
