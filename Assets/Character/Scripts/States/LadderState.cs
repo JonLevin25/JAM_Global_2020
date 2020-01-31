@@ -33,6 +33,11 @@ namespace Character.Scripts.States
             player.animator.SetTrigger(Climb);
             
             player.flashLight.SetActive(false);
+
+            var playerPosition = player.transform.position;
+            playerPosition.x = player.currentLadder.transform.position.x;
+            player.transform.position = playerPosition;
+
         }
 
         public override void ExecuteUpdate()
