@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _floors:
-  - 0
-  - 3.92
+  - -6
+  - -2
+  - 2
   _debugColors:
   - {r: 1, g: 0.44705886, b: 0.9686275, a: 1}
 --- !u!1 &1275115653230650166
@@ -92,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _disallowRepeatLastPipes: 1
-  _debug: 1
+  _debug: 0
   _debugFloors: 0000000001000000
 --- !u!1 &2063198442848749534
 GameObject:
@@ -260,11 +261,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WaterController
-      objectReference: {fileID: 0}
-    - target: {fileID: 8670798981927136846, guid: e96910afaac4013438839a5d53d1c315,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e96910afaac4013438839a5d53d1c315, type: 3}
@@ -466,6 +462,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2447331915143206951}
     m_Modifications:
+    - target: {fileID: 576269479089990436, guid: a575e57f99fb71840914430b02e7696d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.69528896
+      objectReference: {fileID: 0}
+    - target: {fileID: 576269479089990436, guid: a575e57f99fb71840914430b02e7696d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.2201126
+      objectReference: {fileID: 0}
+    - target: {fileID: 576269479089990436, guid: a575e57f99fb71840914430b02e7696d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.993164
+      objectReference: {fileID: 0}
     - target: {fileID: 576269479362225908, guid: a575e57f99fb71840914430b02e7696d,
         type: 3}
       propertyPath: m_Name

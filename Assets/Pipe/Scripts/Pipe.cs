@@ -45,6 +45,10 @@ public class Pipe : MonoBehaviour
 {
     [SerializeField] LeakState LeakingStatus;
     [SerializeField] private FlowPhase[] phases;
+
+    [SerializeField] private bool _debug;
+    [SerializeField] private Color _debugSealedColor;
+    
     private Animator _myAnim;
     private SpriteRenderer _rend;
     private Coroutine _flowRoutine;
@@ -56,18 +60,15 @@ public class Pipe : MonoBehaviour
     public event Action<Pipe> OnPipeFixed;
     public bool IsLeaking => _isLeaking;
 
-    
     private void Awake()
     {
         _rend = GetComponent<SpriteRenderer>();
         _myAnim = GetComponent<Animator>();
-
     }
 
     private void Start()
     {
         SetPipeState(LeakState.NoLeak);
-
     }
     private void Update()
     {
@@ -79,15 +80,16 @@ public class Pipe : MonoBehaviour
         {
             _LastLeakingStatus = _CurrentLeakingStatus;
             _myAnim.SetInteger("state", _LastLeakingStatus);
-
         }
-
-        
     }
 
     public void FixPipe()
     {
         OnPipeFixed?.Invoke(this);
+        if (_debug)
+        {
+            _rend.color = _debugSealedColor;
+        }
     }
 
     public void StartFlow()
@@ -126,7 +128,10 @@ public class Pipe : MonoBehaviour
     private void SetPhase(FlowPhase phase)
     {
         _flowRate = phase.rate;
-        _rend.color = phase.testColor;
+        if (_debug)
+        {
+            _rend.color = phase.testColor;
+        }
     }
 
     public void SetPipeState(LeakState state)

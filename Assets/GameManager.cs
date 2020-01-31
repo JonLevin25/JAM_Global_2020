@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerDrowned()
     {
-        // TODO: Player death
+        player.Die();
         GameOver();
     }
 
