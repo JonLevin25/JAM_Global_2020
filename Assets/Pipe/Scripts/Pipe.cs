@@ -40,9 +40,11 @@ public class Pipe : MonoBehaviour
     [SerializeField] private FlowPhase[] phases;
     private Coroutine _flowRoutine;
     private float _flowRate;
+    private bool _isLeaking;
 
     public event Action<Pipe> OnPipeFixed;
-    
+    public bool IsLeaking => _isLeaking;
+
     private void Update()
     {
         if (_flowRate > 0)
@@ -52,9 +54,15 @@ public class Pipe : MonoBehaviour
         
     }
 
+    public void FixPipe()
+    {
+        OnPipeFixed?.Invoke(this);
+    }
+
     public void StartFlow()
     {
         _flowRoutine = StartCoroutine(FlowRoutine());
+        _isLeaking = true;
     }
 
     public void StopFlow()
@@ -62,11 +70,7 @@ public class Pipe : MonoBehaviour
         if (_flowRoutine != null) StopCoroutine(_flowRoutine);
         _flowRate = 0;
         _rend.color = Color.white;
-    }
-
-    public void FixPipe()
-    {
-        OnPipeFixed?.Invoke(this);
+        _isLeaking = false;
     }
 
     private IEnumerator FlowRoutine()

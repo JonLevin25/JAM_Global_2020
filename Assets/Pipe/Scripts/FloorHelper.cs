@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FloorManager : MonoBehaviour
+public class FloorHelper : MonoBehaviour
 {
     [SerializeField] private float[] _floors;
     [SerializeField] private Color[] _debugColors;
     
-    public static FloorManager Instance;
+    public static FloorHelper Instance;
 
     private void Awake()
     {
@@ -52,11 +51,16 @@ public class FloorManager : MonoBehaviour
         return result;
     }
 
-    private int GetFloor<T>(T component) where T : Component
+    public int GetFloor<T>(T component) where T : Component
     {
         var pos = component.transform.position;
         var yPos = pos.y;
-        
+
+        return GetFloor(yPos);
+    }
+
+    public int GetFloor(float yPos)
+    {
         // if below ground floor
         if (yPos < _floors[0]) return -1;
         
@@ -75,19 +79,7 @@ public class FloorManager : MonoBehaviour
 
     public IEnumerable<T> FindObjectsOnFloor<T>(int floor) where T : Component
     {
-        var isTopMost = floor == _floors.Length - 1;
-
-        var bottom = _floors[floor];
-        var top = isTopMost ? Mathf.Infinity : _floors[floor + 1];
-
-        var objectsInScene = FindObjectsOfType<T>();
-        var relevantObjects = objectsInScene.Where(t =>
-        {
-            var pos = t.transform.position;
-            return bottom <= pos.y && pos.y <= top;
-        });
-
-        return relevantObjects;
+        return GetObjectsByFloors<T>()[floor];
     }
 
     private Color GetColor(int i)
