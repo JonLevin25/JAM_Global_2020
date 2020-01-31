@@ -6160,7 +6160,12 @@ PrefabInstance:
     - target: {fileID: 6458855464092422003, guid: 2d110c3b249b3f04fadd03c46accdabd,
         type: 3}
       propertyPath: _TEST_setWater
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6458855464092422003, guid: 2d110c3b249b3f04fadd03c46accdabd,
+        type: 3}
+      propertyPath: _startWaterLevel
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3235080144478510808, guid: 2d110c3b249b3f04fadd03c46accdabd, type: 3}
