@@ -44,6 +44,8 @@ namespace Character.Scripts
 
 		[SerializeField] internal GameObject flashLight;
 
+		internal float lastTimeJumpState;
+
 		private void Awake()
 		{
 			rigidbody = GetComponent<Rigidbody2D>();
@@ -76,7 +78,7 @@ namespace Character.Scripts
 			{
 				stateMachine.ChangeState(ladderState);
 			}
-			else if (stateMachine.currentState != ladderState && stateMachine.currentState != groundState && isGrounded)
+			else if (stateMachine.currentState != ladderState && stateMachine.currentState != groundState && isGrounded && Time.time - lastTimeJumpState > 0.25f)
 			{
 				stateMachine.ChangeState(groundState);
 			}
