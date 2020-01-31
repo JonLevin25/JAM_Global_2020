@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-
 public class PipeManager : MonoBehaviour
 {
+    [Tooltip("The number of \"last pipes\" to ignore when choosing a new one")]
+    [SerializeField] private int _disallowRepeatLastPipes = 1;
     [SerializeField] private bool _debug;
     [SerializeField] private int[] _debugFloors;
     
     public static PipeManager Instance;
     
     private IReadOnlyList<List<Pipe>> _pipesByFloor;
-    private readonly HashSet<Pipe> _fixedPipes = new HashSet<Pipe>();
+    private readonly Stack<Pipe> _fixedPipes = new Stack<Pipe>();
     private readonly HashSet<Pipe> _currLeakingPipes = new HashSet<Pipe>();
 
     private void Awake()
@@ -49,7 +49,7 @@ public class PipeManager : MonoBehaviour
         
         GUILayout.Space(25f);
         
-        GUILayout.Label("Fixed Pipes:", style);
+        GUILayout.Label("Last Pipes fixed:", style);
         foreach (var pipe in _fixedPipes)
         {
             GUILayout.Label(pipe.name, style);
@@ -71,7 +71,7 @@ public class PipeManager : MonoBehaviour
     public void LeakRandomPipe(IEnumerable<int> fromFloors)
     {
         var allPipesOnFloors = fromFloors.SelectMany(i => _pipesByFloor[i]);
-        var relevantPipes = allPipesOnFloors.Where(NotFixedOrLeaking).ToArray(); // disregard fixed or currently leaking pipes
+        var relevantPipes = allPipesOnFloors.Where(PipeFilterCondition).ToArray(); // disregard fixed or currently leaking pipes
 
         if (relevantPipes.Length == 0)
         {
@@ -94,11 +94,20 @@ public class PipeManager : MonoBehaviour
     private void OnPipeFixed(Pipe pipe)
     {
         pipe.StopFlow();
-        _fixedPipes.Add(pipe);
+        _fixedPipes.Push(pipe);
         _currLeakingPipes.Remove(pipe);
     }
 
-    private bool NotFixedOrLeaking(Pipe pipe) => !IsFixed(pipe) && !IsLeaking(pipe);
+    private bool PipeFilterCondition(Pipe pipe)
+    {
+        if (IsLeaking(pipe)) return false;
+        foreach (var fixedPipe in _fixedPipes.Take(_disallowRepeatLastPipes))
+        {
+            if (fixedPipe == pipe) return false;
+        }
+
+        return true;
+    }
 
     private bool IsFixed(Pipe pipe) => _fixedPipes.Contains(pipe);
     private bool IsLeaking(Pipe pipe) => _currLeakingPipes.Contains(pipe);
