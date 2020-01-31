@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator Start()
     {
-        pipeManager.OnPipeFixed += PipeFixedHandler;
+        pipeManager.OnPipeFixed += OnPipeFixed;
         WaterDrown.OnDrowned += OnDrowned;
         WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
         
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        pipeManager.OnPipeFixed -= PipeFixedHandler;
+        pipeManager.OnPipeFixed -= OnPipeFixed;
         WaterDrown.OnDrowned -= OnDrowned;
         WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
     }
@@ -70,13 +70,15 @@ public class GameManager : MonoBehaviour
         gameOverUI.gameObject.SetActive(true);
     }
 
-    private void PipeFixedHandler(Pipe pipe)
+    private void OnPipeFixed(Pipe pipe)
     {
+        Debug.Log($"OnPipeFixed({pipe.name})");
         StartCoroutine(LeakPipeAfter(fixToNextLeakTime));
     }
 
     private void OnFloorFlooded(int floor)
     {
+        Debug.Log($"OnFloorFlooded({floor}) [TopFloor: {FloorHelper.Instance.TopFloor}]");
         if (floor == FloorHelper.Instance.TopFloor) return; // Player's gonna die soon anyway
         
         pipeManager.ClosePipesOnFloor(floor);

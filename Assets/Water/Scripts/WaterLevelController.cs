@@ -17,14 +17,15 @@ public class WaterLevelController : MonoBehaviour
     private float _velocity;
     private int _prevHighestFloodedFloor = -1;
 
-    public float WorldWaterLevel => _water.transform.position.y + _currWaterLevel; 
+    public float WorldWaterLevel => _water.transform.position.y + _currWaterLevel;
 
     public int HighestFloodedFloor
     {
         get
         {
             var waterLevel = FloorHelper.Instance.GetFloor(WorldWaterLevel);
-            return Mathf.FloorToInt(waterLevel - 0.5f); // Return the last floor who'se more than half flooded
+            var naiveFloor =  Mathf.FloorToInt(waterLevel - 0.5f); // Return the last floor whose more than half flooded
+            return Mathf.Max(naiveFloor, 0);
         }
     }
 
