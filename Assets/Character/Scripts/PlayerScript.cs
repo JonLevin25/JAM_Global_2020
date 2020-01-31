@@ -8,11 +8,13 @@ namespace Character.Scripts
 {
 	[RequireComponent(typeof(Rigidbody2D))]
 	[RequireComponent(typeof(Collider2D))]
+	[RequireComponent(typeof(Animator))]
 	public class PlayerScript : MonoBehaviour
 	{
 		private enum State {grounded, ladder, jump}
 		internal Rigidbody2D rigidbody;
 		internal Collider2D collider;
+		internal Animator animator;
 
 		[SerializeField] private float horizontalSpeed = 1;
 		[SerializeField] internal float ladderSpeed = 1;
@@ -24,15 +26,19 @@ namespace Character.Scripts
 		internal float walk, ladder;
 
 		internal Collider2D currentLadder;
+		
+		internal Cork currentCork;
+		[SerializeField] private Transform corkPivot;
 
 		internal StateMachine stateMachine;
 		internal GroundState groundState;
 		internal LadderState ladderState;
 		internal JumpState jumpState;
+		internal DieState dieState;
 
 		internal UnityAction movementAditionAction;
 
-		private bool isGrounded;
+		internal bool isGrounded;
 		[SerializeField] private LayerMask whatIsGround;
 		[SerializeField] private Transform legTransform;
 
@@ -40,11 +46,13 @@ namespace Character.Scripts
 		{
 			rigidbody = GetComponent<Rigidbody2D>();
 			collider = GetComponent<Collider2D>();
+			animator = GetComponent<Animator>();
 			
 			stateMachine = ScriptableObject.CreateInstance<StateMachine>();
 			groundState = new GroundState(this);
 			ladderState = new LadderState(this);
 			jumpState = new JumpState(this);
+			dieState = new DieState(this);
 			
 			stateMachine.ChangeState(groundState);
 		}
@@ -52,6 +60,10 @@ namespace Character.Scripts
 		private void Update()
 		{
 			stateMachine.Update();
+
+			SetDirection();
+			
+			animator.SetFloat("absoluteHorizontalVelocity", Mathf.Abs(walk));
 		}
 
 		private void FixedUpdate()
@@ -62,7 +74,7 @@ namespace Character.Scripts
 			{
 				stateMachine.ChangeState(ladderState);
 			}
-			else if (stateMachine.currentState != ladderState && isGrounded)
+			else if (stateMachine.currentState != groundState && isGrounded)
 			{
 				stateMachine.ChangeState(groundState);
 			}
@@ -72,6 +84,19 @@ namespace Character.Scripts
 			
 			
 			Movement();
+		}
+
+		private void SetDirection()
+		{
+			float x = walk;
+			if (x == 0)
+			{
+				return;
+			}
+			bool isRight = x > 0;
+			Vector3 temp = transform.localScale;
+			temp.x = isRight? Mathf.Abs(temp.x) : -Mathf.Abs(temp.x);
+			transform.localScale = temp;
 		}
 
 		private void GroundCheck()
@@ -91,6 +116,7 @@ namespace Character.Scripts
 			Vector2 velocity = rigidbody.velocity;
 			velocity.x = walk * horizontalSpeed * totalSpeedMultiplier;
 			rigidbody.velocity = velocity;
+			// rigidbody.AddForce(Vector2.right * (walk * horizontalSpeed * totalSpeedMultiplier));
 		}
 
 		public void OnWalk(InputValue value)
@@ -107,6 +133,7 @@ namespace Character.Scripts
 		{
 			if (stateMachine.currentState != jumpState && isGrounded)
 			{
+				rigidbody.AddForce(Vector2.up * jumpForce);
 				stateMachine.ChangeState(jumpState);
 			}
 		}
@@ -117,6 +144,18 @@ namespace Character.Scripts
 			{
 				currentLadder = other;
 			}
+			if (currentCork == null && other.CompareTag("Cork"))
+			{
+				//take cork
+				currentCork = other.GetComponent<Cork>();
+				if (currentCork.player == null)
+				{
+					Transform corkTransform;
+					(corkTransform = currentCork.transform).SetParent(corkPivot);
+					corkTransform.localPosition = Vector3.zero;
+					currentCork.player = this;
+				}
+			}
 		}
 
 		private void OnTriggerExit2D(Collider2D other)
@@ -125,6 +164,11 @@ namespace Character.Scripts
 			{
 				currentLadder = null;
 			}
+		}
+
+		public void Die()
+		{
+			stateMachine.ChangeState(dieState);
 		}
 	}
 }
