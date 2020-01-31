@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")]
     [SerializeField] private float firstPipeLeakTime;
     [SerializeField] private float fixToNextLeakTime;
+    [SerializeField] private float _gameOverDelay;
 
 
     private void Awake()
@@ -54,11 +55,13 @@ public class GameManager : MonoBehaviour
     private void OnPlayerDrowned()
     {
         player.Die();
-        GameOver();
+        
+        StartCoroutine(GameOver(_gameOverDelay));
     }
 
-    private void GameOver()
+    private IEnumerator GameOver(float gameOverDelay)
     {
+        yield return new WaitForSeconds(gameOverDelay);
         gameOverUI.gameObject.SetActive(true);
     }
 
