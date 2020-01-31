@@ -9,6 +9,8 @@ public class FloorHelper : MonoBehaviour
     
     public static FloorHelper Instance;
 
+    public int TopFloor => _floors.Length - 1;
+    
     private void Awake()
     {
         if (Instance != null)

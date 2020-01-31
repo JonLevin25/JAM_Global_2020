@@ -57,7 +57,7 @@ MonoBehaviour:
     testColor: {r: 1, g: 0.5801887, b: 0.5801887, a: 1}
     rate: 0.04
     FlowSound: {fileID: 8300000, guid: 620e5f4a3f9ea06409001a9cec3bff85, type: 3}
-  _debug: 1
+  _debug: 0
   _debugSealedColor: {r: 0.3810326, g: 1, b: 0.3726415, a: 1}
 --- !u!212 &4101815493905532902
 SpriteRenderer:

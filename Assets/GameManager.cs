@@ -77,6 +77,8 @@ public class GameManager : MonoBehaviour
 
     private void OnFloorFlooded(int floor)
     {
+        if (floor == FloorHelper.Instance.TopFloor) return; // Player's gonna die soon anyway
+        
         pipeManager.ClosePipesOnFloor(floor);
         StartCoroutine(LeakPipeAfter(floorFloodToNextLeakTime));
     }
@@ -85,7 +87,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         var highestFlooded = waterLevelController.HighestFloodedFloor;
-        
+
         LeakPipe(highestFlooded + 1, highestFlooded + 2);
     }
 

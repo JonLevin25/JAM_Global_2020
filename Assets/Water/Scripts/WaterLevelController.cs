@@ -17,16 +17,16 @@ public class WaterLevelController : MonoBehaviour
     private float _velocity;
     private int _prevHighestFloodedFloor = -1;
 
+    private float WorldWaterLevel => transform.position.y + _currWaterLevel; 
+
     public int HighestFloodedFloor
     {
         get
         {
-            var waterLevel = FloorHelper.Instance.GetFloor(_currWaterLevel);
+            var waterLevel = FloorHelper.Instance.GetFloor(WorldWaterLevel);
             return Mathf.FloorToInt(waterLevel - 0.5f); // Return the last floor who'se more than half flooded
         }
     }
-
-    public float CurrWaterLevel => _currWaterLevel;
 
     public event Action<int> OnFloorFlooded;
 
@@ -53,7 +53,7 @@ public class WaterLevelController : MonoBehaviour
         {
             _targetWaterLevel = _TEST_targetWaterLevel;
         }
-        
+
         // Smooth water to level
         _currWaterLevel = Mathf.SmoothDamp(_currWaterLevel, _targetWaterLevel, ref _velocity, _smoothTime);
         _water.SetWaterLevel(_currWaterLevel);
@@ -62,9 +62,6 @@ public class WaterLevelController : MonoBehaviour
         {
             var newFloorFlooded = _prevHighestFloodedFloor + 1;
             OnFloorFlooded?.Invoke(newFloorFlooded);
-            
-            Debug.Log($"OnFloorFlooded({newFloorFlooded}) [WaterLevel: {_currWaterLevel}]");
-            _prevHighestFloodedFloor = newFloorFlooded;
         }
     }
 
