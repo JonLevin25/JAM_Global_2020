@@ -17,7 +17,7 @@ public class WaterLevelController : MonoBehaviour
     private float _velocity;
     private int _prevHighestFloodedFloor = -1;
 
-    private float WorldWaterLevel => _water.transform.position.y + _currWaterLevel; 
+    public float WorldWaterLevel => _water.transform.position.y + _currWaterLevel; 
 
     public int HighestFloodedFloor
     {

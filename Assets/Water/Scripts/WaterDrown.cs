@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WaterDrown : MonoBehaviour
 {
     [SerializeField] private bool _debug;
     [SerializeField] private float _timeToDrown;
-    
-    public event Action<GameObject> OnDrowned;
-    
-    private Dictionary<GameObject, float> _drownTime = new Dictionary<GameObject, float>();
-    private HashSet<GameObject> _drownedObjects = new HashSet<GameObject>();
+    [SerializeField] private Transform _drownMarker;
+
+    public static event Action<GameObject> OnDrowned;
+    private float _underWaterCounter;
+    private bool _hasDrowned;
 
     public static WaterDrown Instance;
-    
+
     private void Awake()
     {
         if (Instance != null)
@@ -21,67 +20,48 @@ public class WaterDrown : MonoBehaviour
             Debug.LogError("Another singleton instance exists! this should not happen");
             Destroy(Instance);
         }
-    
+
         Instance = this;
     }
 
     private void OnGUI()
     {
         if (!_debug) return;
-        
+
         var style = new GUIStyle
         {
             fontSize = 30
         };
         GUILayout.Label("Drowned Time", style);
-        foreach (var kvp in _drownTime)
-        {
-            GUILayout.Label($"{kvp.Key.name} [{kvp.Value}]", style);
-        }
+    }
+
+    private void Update()
+    {
+        if (_hasDrowned) return;
         
-        GUILayout.Space(50);
+        var height = _drownMarker.position.y;
+        var waterHeight = WaterLevelController.Instance.WorldWaterLevel;
         
-        GUILayout.Label("Already Drowned", style);
-        foreach (var obj in _drownedObjects)
+        if (height >= waterHeight) return; // We're not under water
+        
+        
+        _underWaterCounter += Time.deltaTime;
+        if (_underWaterCounter >= _timeToDrown)
         {
-            GUILayout.Label($"{obj.name}", style);
+            OnDrownedInternal();
         }
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnDrownedInternal()
     {
-        var otherGO = other.gameObject;
-        
-        // Already drowned
-        if (_drownedObjects.Contains(otherGO)) return;
-            
-        if (_drownTime.ContainsKey(otherGO))
-        {
-            _drownTime[otherGO] += Time.deltaTime;
-            if (_drownTime[otherGO] >= _timeToDrown)
-            {
-                OnObjectDrowned(otherGO);
-            }
-        }
-        else
-        {
-            _drownTime.Add(otherGO, 0f);
-        }
+        OnDrowned?.Invoke(gameObject);
+        _hasDrowned = true;
+        // _underWaterCounter = 0f;
     }
+    
 
-    private void OnTriggerExit2D(Collider2D other)
+    private static bool ContainsLayer(LayerMask mask, int layer)
     {
-        var otherGO = other.gameObject;
-        if (_drownTime.ContainsKey(otherGO))
-        {
-            _drownTime.Remove(other.gameObject);
-        }
-    }
-
-    private void OnObjectDrowned(GameObject otherGo)
-    {
-        OnDrowned?.Invoke(otherGo);
-        _drownTime.Remove(otherGo);
-        _drownedObjects.Add(otherGo);
+        return mask == (mask | (1 << layer));
     }
 }

@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator Start()
     {
         pipeManager.OnPipeFixed += PipeFixedHandler;
-        WaterDrown.Instance.OnDrowned += OnDrowned;
+        WaterDrown.OnDrowned += OnDrowned;
         WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
         
         yield return new WaitForSeconds(firstPipeLeakTime);
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         pipeManager.OnPipeFixed -= PipeFixedHandler;
-        WaterDrown.Instance.OnDrowned -= OnDrowned;
+        WaterDrown.OnDrowned -= OnDrowned;
         WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
     }
 

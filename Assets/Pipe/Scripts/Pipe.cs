@@ -78,6 +78,7 @@ public class Pipe : MonoBehaviour
     {
         if (_flowRate > 0)
         {
+            Debug.Log($"Pipe {name} Increasing water!");
             WaterLevelController.Instance.IncreaseWaterLevel(_flowRate * Time.deltaTime);
         }
         if(_LastLeakingStatus!=_CurrentLeakingStatus)
