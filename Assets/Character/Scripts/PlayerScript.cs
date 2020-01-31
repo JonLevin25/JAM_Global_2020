@@ -42,6 +42,8 @@ namespace Character.Scripts
 		[SerializeField] private LayerMask whatIsGround;
 		[SerializeField] private Transform legTransform;
 
+		[SerializeField] internal GameObject flashLight;
+
 		private void Awake()
 		{
 			rigidbody = GetComponent<Rigidbody2D>();
