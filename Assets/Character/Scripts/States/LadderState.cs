@@ -1,11 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Character.Scripts.States
 {
     public class LadderState : PlayerState
     {
-
         private LadderScript ladder;
+
+        private IEnumerable<Collider2D> GroundColliders 
+            => ladder.groundCollider2Ds.Where(col => col != null);
+
         public LadderState(PlayerScript player) : base(player)
         {
         }
@@ -18,8 +23,8 @@ namespace Character.Scripts.States
             player.movementAditionAction += SetVerticalMovement;
 
             player.rigidbody.gravityScale = 0;
-
-            foreach (var groundCollider in ladder.groundCollider2Ds)
+            
+            foreach (var groundCollider in GroundColliders)
             {
                 Physics2D.IgnoreCollision(player.collider, groundCollider, true);
             }
@@ -40,7 +45,7 @@ namespace Character.Scripts.States
 
         public override void Exit()
         {
-            foreach (var groundCollider in ladder.groundCollider2Ds)
+            foreach (var groundCollider in GroundColliders)
             {
                 Physics2D.IgnoreCollision(player.collider, groundCollider, false);
             }
