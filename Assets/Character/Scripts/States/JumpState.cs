@@ -4,6 +4,8 @@ namespace Character.Scripts.States
 {
     public class JumpState : PlayerState
     {
+        private static readonly int Jump = Animator.StringToHash("jump");
+
         public JumpState(PlayerScript player) : base(player)
         {
         }
@@ -11,8 +13,7 @@ namespace Character.Scripts.States
         public override void Enter()
         {
             player.movementAditionAction += player.SetHorizontalMovement;
-            
-            player.rigidbody.AddForce(Vector2.up * player.jumpForce);
+            player.animator.SetTrigger(Jump);
         }
 
         public override void ExecuteUpdate()
