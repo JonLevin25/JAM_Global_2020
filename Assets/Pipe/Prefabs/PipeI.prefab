@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4101815493905532903}
   - component: {fileID: 4101815493905532902}
   - component: {fileID: -5336327725222698209}
-  - component: {fileID: 1480460107897522507}
   m_Layer: 0
   m_Name: PipeI
   m_TagString: Pipe
@@ -126,25 +125,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1480460107897522507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4101815493905532900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 824b685bda241d04ba899ac0015bea02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LeakingStatus: 0
-  phases:
-  - startTime: 0
-    testColor: {r: 0.4812656, g: 0.990566, b: 0.975758, a: 1}
-    rate: 0.5
-  - startTime: 0
-    testColor: {r: 1, g: 0.3820755, b: 0.46029076, a: 1}
-    rate: 0.5
-  _debug: 1
-  _debugSealedColor: {r: 0.33490568, g: 1, b: 0.3386451, a: 1}
