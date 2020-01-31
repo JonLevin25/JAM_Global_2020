@@ -194,8 +194,9 @@ MonoBehaviour:
   corkManager: {fileID: 9215001842640664501}
   gameOverUI: {fileID: 7628860648979139800}
   firstPipeLeakTime: 2
-  fixToNextLeakTime: 1.5
-  _gameOverDelay: 2
+  fixToNextLeakTime: 3
+  floorFloodToNextLeakTime: 2
+  gameOverDelay: 2
 --- !u!1001 &2447331915260722278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -538,7 +539,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 576269479089990442, guid: a575e57f99fb71840914430b02e7696d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a575e57f99fb71840914430b02e7696d, type: 3}
 --- !u!4 &3235080144213873415 stripped
 Transform:

@@ -6626,11 +6626,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -10
       objectReference: {fileID: 0}
-    - target: {fileID: 3235080144478510807, guid: 2d110c3b249b3f04fadd03c46accdabd,
-        type: 3}
-      propertyPath: m_RendererIndex
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 6458855463743296043, guid: 2d110c3b249b3f04fadd03c46accdabd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6641,16 +6636,5 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -7
       objectReference: {fileID: 0}
-    - target: {fileID: 6458855464092422003, guid: 2d110c3b249b3f04fadd03c46accdabd,
-        type: 3}
-      propertyPath: _TEST_setWater
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6458855464092422003, guid: 2d110c3b249b3f04fadd03c46accdabd,
-        type: 3}
-      propertyPath: _startWaterLevel
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3235080144478510808, guid: 2d110c3b249b3f04fadd03c46accdabd, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d110c3b249b3f04fadd03c46accdabd, type: 3}

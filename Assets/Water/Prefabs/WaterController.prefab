@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11122bcb4e6a5584f9fb931164f4e8d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startWaterLevel: 1
+  _startWaterLevel: 0
   _smoothTime: 1
   _water: {fileID: 8670798981927136844}
   _TEST_setWater: 0
