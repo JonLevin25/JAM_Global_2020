@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Character.Scripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +17,9 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")]
     [SerializeField] private float firstPipeLeakTime;
     [SerializeField] private float fixToNextLeakTime;
-    [SerializeField] private float _gameOverDelay;
+    [SerializeField] private float floorFloodToNextLeakTime;
+    [FormerlySerializedAs("_gameOverDelay")] [SerializeField] private float gameOverDelay;
+    
 
 
     private void Awake()
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
     {
         pipeManager.OnPipeFixed += PipeFixedHandler;
         WaterDrown.Instance.OnDrowned += OnDrowned;
+        WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
         
         yield return new WaitForSeconds(firstPipeLeakTime);
         LeakPipe(0);
@@ -42,6 +46,7 @@ public class GameManager : MonoBehaviour
     {
         pipeManager.OnPipeFixed -= PipeFixedHandler;
         WaterDrown.Instance.OnDrowned -= OnDrowned;
+        WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
     }
 
     private void OnDrowned(GameObject obj)
@@ -56,7 +61,7 @@ public class GameManager : MonoBehaviour
     {
         player.Die();
         
-        StartCoroutine(GameOver(_gameOverDelay));
+        StartCoroutine(GameOver(gameOverDelay));
     }
 
     private IEnumerator GameOver(float gameOverDelay)
@@ -70,12 +75,18 @@ public class GameManager : MonoBehaviour
         StartCoroutine(LeakPipeAfter(fixToNextLeakTime));
     }
 
+    private void OnFloorFlooded(int floor)
+    {
+        pipeManager.ClosePipesOnFloor(floor);
+        StartCoroutine(LeakPipeAfter(floorFloodToNextLeakTime));
+    }
+
     private IEnumerator LeakPipeAfter(float delay)
     {
         yield return new WaitForSeconds(delay);
-        var floodedFloors = waterLevelController.FloodedFloorCount;
+        var highestFlooded = waterLevelController.HighestFloodedFloor;
         
-        LeakPipe(floodedFloors, floodedFloors + 1);
+        LeakPipe(highestFlooded + 1, highestFlooded + 2);
     }
 
     private void LeakPipe(params int[] fromFloors)

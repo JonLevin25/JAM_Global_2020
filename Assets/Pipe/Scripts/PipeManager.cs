@@ -64,7 +64,7 @@ public class PipeManager : MonoBehaviour
     {
         _pipesByFloor = FloorHelper.Instance.GetObjectsByFloors<Pipe>()
             .Select(pipes => pipes.ToList()).ToList();
-
+        
         foreach (var pipe in _pipesByFloor.SelectMany(pipes => pipes))
         {
             pipe.OnPipeFixed += PipeFixedHandler;
@@ -129,4 +129,12 @@ public class PipeManager : MonoBehaviour
 
     private bool IsFixed(Pipe pipe) => _fixedPipes.Contains(pipe);
     private bool IsLeaking(Pipe pipe) => _currLeakingPipes.Contains(pipe);
+
+    public void ClosePipesOnFloor(int floor)
+    {
+        foreach (var pipe in _pipesByFloor[floor])
+        {
+            pipe.StopFlow();
+        }
+    }
 }
