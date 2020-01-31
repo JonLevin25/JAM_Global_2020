@@ -35,6 +35,7 @@ namespace Character.Scripts.States
 
         public override void ExecuteUpdate()
         {
+            player.animator.SetFloat("climbSpeed", player.ladder);
         }
 
         public override void ExecuteFixedUpdate()

@@ -164,7 +164,7 @@ MonoBehaviour:
   horizontalSpeed: 1
   ladderSpeed: 1
   totalSpeedMultiplier: 3
-  jumpForce: 1000
+  jumpForce: 200
   corkPivot: {fileID: 0}
   whatIsGround:
     serializedVersion: 2
