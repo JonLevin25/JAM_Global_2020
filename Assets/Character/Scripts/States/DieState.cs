@@ -13,7 +13,8 @@ namespace Character.Scripts.States
 
         public override void Enter()
         {
-            player.GetComponent<PlayerInput>().enabled = false;
+            // player.GetComponent<PlayerInput>().enabled = false;
+            player.GetComponent<PlayerInput>().DeactivateInput();
             player.animator.SetTrigger(Dead);
         }
 
@@ -27,7 +28,7 @@ namespace Character.Scripts.States
 
         public override void Exit()
         {
-            player.GetComponent<PlayerInput>().enabled = true; //Why we need this line???
+            // player.GetComponent<PlayerInput>().enabled = true; //Why we need this line???
         }
     }
 }
