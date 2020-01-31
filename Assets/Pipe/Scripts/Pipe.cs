@@ -32,6 +32,7 @@ public struct FlowPhase
     public float startTime;
     public Color testColor;
     public float rate;
+    public AudioClip FlowSound;
     
 }
 public enum LeakState
@@ -51,6 +52,7 @@ public class Pipe : MonoBehaviour
     
     private Animator _myAnim;
     private SpriteRenderer _rend;
+    private AudioSource _Audio;
     private Coroutine _flowRoutine;
     private float _flowRate;
     private bool _isLeaking;
@@ -64,6 +66,8 @@ public class Pipe : MonoBehaviour
     {
         _rend = GetComponent<SpriteRenderer>();
         _myAnim = GetComponent<Animator>();
+        _Audio = GetComponent<AudioSource>();
+
     }
 
     private void Start()
@@ -96,7 +100,7 @@ public class Pipe : MonoBehaviour
     {
         _flowRoutine = StartCoroutine(FlowRoutine());
         _isLeaking = true;
-
+        _Audio.Play();
     }
 
     public void StopFlow()
@@ -105,6 +109,7 @@ public class Pipe : MonoBehaviour
         _flowRate = 0;
         _rend.color = Color.white;
         _isLeaking = false;
+        _Audio.Stop();
 
     }
 
@@ -128,6 +133,9 @@ public class Pipe : MonoBehaviour
     private void SetPhase(FlowPhase phase)
     {
         _flowRate = phase.rate;
+        _Audio.clip = phase.FlowSound;
+        _Audio.loop = true;
+        _Audio.Play();
         if (_debug)
         {
             _rend.color = phase.testColor;
