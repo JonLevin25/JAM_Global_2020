@@ -60,7 +60,8 @@ public class WaterLevelController : MonoBehaviour
 
         if (HighestFloodedFloor > _prevHighestFloodedFloor)
         {
-            var newFloorFlooded = _prevHighestFloodedFloor + 1;
+            _prevHighestFloodedFloor++;
+            var newFloorFlooded = _prevHighestFloodedFloor;
             OnFloorFlooded?.Invoke(newFloorFlooded);
         }
     }
