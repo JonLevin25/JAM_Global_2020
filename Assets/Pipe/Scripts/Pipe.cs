@@ -49,6 +49,8 @@ public class Pipe : MonoBehaviour
 
     [SerializeField] private bool _debug;
     [SerializeField] private Color _debugSealedColor;
+
+    [SerializeField] private ParticleSystem particleSystem;
     
     private Animator _myAnim;
     private SpriteRenderer _rend;
@@ -101,6 +103,7 @@ public class Pipe : MonoBehaviour
         _flowRoutine = StartCoroutine(FlowRoutine());
         _isLeaking = true;
         _Audio.Play();
+        particleSystem?.Play();
     }
 
     public void StopFlow()
@@ -110,6 +113,7 @@ public class Pipe : MonoBehaviour
         _rend.color = Color.white;
         _isLeaking = false;
         _Audio.Stop();
+        particleSystem?.Stop();
 
     }
 
