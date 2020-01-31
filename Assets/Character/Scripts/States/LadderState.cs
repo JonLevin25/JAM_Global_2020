@@ -7,6 +7,7 @@ namespace Character.Scripts.States
     public class LadderState : PlayerState
     {
         private LadderScript ladder;
+        private static readonly int Climb = Animator.StringToHash("climb");
 
         private IEnumerable<Collider2D> GroundColliders 
             => ladder.groundCollider2Ds.Where(col => col != null);
@@ -29,6 +30,7 @@ namespace Character.Scripts.States
                 Physics2D.IgnoreCollision(player.collider, groundCollider, true);
             }
             
+            player.animator.SetTrigger(Climb);
         }
 
         public override void ExecuteUpdate()
@@ -39,7 +41,14 @@ namespace Character.Scripts.States
         {
             if (player.currentLadder == null)
             {
-                player.stateMachine.ChangeState(player.groundState);
+                if (player.isGrounded)
+                {
+                    player.stateMachine.ChangeState(player.groundState);
+                }
+                else
+                {
+                    player.stateMachine.ChangeState(player.jumpState);
+                }
             }
         }
 
