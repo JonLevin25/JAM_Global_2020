@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerScript player;
     [SerializeField] private WaterLevelController waterLevelController;
     [SerializeField] private PipeManager pipeManager;
+    [SerializeField] private CorkManager corkManager;
     [SerializeField] private GameOverController gameOverUI;
 
     [Header("Game Settings")]
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
         WaterDrown.Instance.OnDrowned += OnDrowned;
         
         yield return new WaitForSeconds(firstPipeLeakTime);
-        pipeManager.LeakRandomPipe(0);
+        LeakPipe(0);
     }
 
     private void OnDestroy()
@@ -66,6 +67,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         var floodedFloors = waterLevelController.FloodedFloorCount;
         
-        pipeManager.LeakRandomPipe(floodedFloors, floodedFloors + 1);
+        LeakPipe(floodedFloors, floodedFloors + 1);
+    }
+
+    private void LeakPipe(params int[] fromFloors)
+    {
+        pipeManager.LeakRandomPipe(fromFloors);
+        corkManager.SpawnRandomCork(fromFloors);
     }
 }
