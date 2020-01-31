@@ -52,7 +52,7 @@ MonoBehaviour:
   phases:
   - startTime: 0
     testColor: {r: 0.6739154, g: 1, b: 0.6556604, a: 1}
-    rate: 0.2
+    rate: 0.025
     FlowSound: {fileID: 8300000, guid: a3e8044db48f960449677bfe06e5b471, type: 3}
   - startTime: 3
     testColor: {r: 1, g: 0.5801887, b: 0.5801887, a: 1}

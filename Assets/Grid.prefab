@@ -1340,6 +1340,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LadderTiles
       objectReference: {fileID: 0}
+    - target: {fileID: 8899619771680822022, guid: df89cd72b91e06f43855b76def9c3020,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8899619771680822023, guid: df89cd72b91e06f43855b76def9c3020,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1414,6 +1419,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FloorTiles
+      objectReference: {fileID: 0}
+    - target: {fileID: 644956824776647986, guid: 5e897bb2820910f43a901b3a82252229,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 644956824776647987, guid: 5e897bb2820910f43a901b3a82252229,
         type: 3}
@@ -2304,6 +2314,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[1].Array.size
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 644956824776647991, guid: 5e897bb2820910f43a901b3a82252229,
+        type: 3}
+      propertyPath: m_ColliderPaths.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 644956824776647991, guid: 5e897bb2820910f43a901b3a82252229,
         type: 3}
@@ -3943,7 +3958,7 @@ PrefabInstance:
     - target: {fileID: 644956824817173725, guid: 5e897bb2820910f43a901b3a82252229,
         type: 3}
       propertyPath: m_InstanceId
-      value: -30438
+      value: -117258
       objectReference: {fileID: 0}
     - target: {fileID: 644956825393368679, guid: 5e897bb2820910f43a901b3a82252229,
         type: 3}
@@ -3953,7 +3968,7 @@ PrefabInstance:
     - target: {fileID: 644956825393368679, guid: 5e897bb2820910f43a901b3a82252229,
         type: 3}
       propertyPath: m_InstanceId
-      value: -30436
+      value: -117256
       objectReference: {fileID: 0}
     - target: {fileID: 644956825519651642, guid: 5e897bb2820910f43a901b3a82252229,
         type: 3}
@@ -3963,7 +3978,7 @@ PrefabInstance:
     - target: {fileID: 644956825519651642, guid: 5e897bb2820910f43a901b3a82252229,
         type: 3}
       propertyPath: m_InstanceId
-      value: -30434
+      value: -117254
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e897bb2820910f43a901b3a82252229, type: 3}
