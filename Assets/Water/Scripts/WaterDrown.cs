@@ -7,10 +7,23 @@ public class WaterDrown : MonoBehaviour
     [SerializeField] private bool _debug;
     [SerializeField] private float _timeToDrown;
     
-    public static event Action<GameObject> OnDrowned;
+    public event Action<GameObject> OnDrowned;
     
     private Dictionary<GameObject, float> _drownTime = new Dictionary<GameObject, float>();
     private HashSet<GameObject> _drownedObjects = new HashSet<GameObject>();
+
+    public static WaterDrown Instance;
+    
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("Another singleton instance exists! this should not happen");
+            Destroy(Instance);
+        }
+    
+        Instance = this;
+    }
 
     private void OnGUI()
     {
