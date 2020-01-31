@@ -31,10 +31,13 @@ namespace Character.Scripts.States
             }
             
             player.animator.SetTrigger(Climb);
+            
+            player.flashLight.SetActive(false);
         }
 
         public override void ExecuteUpdate()
         {
+            player.animator.SetFloat("climbSpeed", player.ladder);
         }
 
         public override void ExecuteFixedUpdate()
@@ -54,6 +57,8 @@ namespace Character.Scripts.States
 
         public override void Exit()
         {
+            player.flashLight.SetActive(true);
+            
             foreach (var groundCollider in GroundColliders)
             {
                 Physics2D.IgnoreCollision(player.collider, groundCollider, false);
