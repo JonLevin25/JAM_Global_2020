@@ -4808,15 +4808,17 @@ MonoBehaviour:
   - startTime: 0
     testColor: {r: 0.654902, g: 1, b: 0.9702728, a: 1}
     rate: 0.03
-    FlowSound: {fileID: 8300000, guid: a3e8044db48f960449677bfe06e5b471, type: 3}
+    FlowSound: {fileID: 8300000, guid: 620e5f4a3f9ea06409001a9cec3bff85, type: 3}
   - startTime: 6
     testColor: {r: 1, g: 0.5801887, b: 0.5801887, a: 1}
     rate: 0.08
-    FlowSound: {fileID: 8300000, guid: 620e5f4a3f9ea06409001a9cec3bff85, type: 3}
+    FlowSound: {fileID: 8300000, guid: f7e3fe4517ce5c54c9a6bdd2f49c1487, type: 3}
   _debug: 0
   _debugSealedColor: {r: 0.3810326, g: 1, b: 0.3726415, a: 1}
   lightFlowParticles: {fileID: 2348290839894628239}
   heavyFlowParticles: {fileID: 6520665282591425432}
+  FixSound: {fileID: 0}
+  _delayBeforeFlowStarts: 2
 --- !u!212 &4101815493905532902
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4924,7 +4926,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1918429471194346097, guid: f54d45d27981b2f4099d4b7d16efa43c,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 620e5f4a3f9ea06409001a9cec3bff85, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 8d5351a9098f1804eb2ba47b82bd75f3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
