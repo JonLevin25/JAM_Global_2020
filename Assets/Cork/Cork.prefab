@@ -104,7 +104,6 @@ MonoBehaviour:
   PlaySoundOnlyOnce: 0
   CollisionSoundParticle: {fileID: 3540468839085112787, guid: b4f0b98fde02fd041ac5ff8ce3a4941a,
     type: 3}
-  PickUpSound: {fileID: 8300000, guid: 299ea7191b7953b408bb6e7f1cf12b1b, type: 3}
 --- !u!50 &5777654193631583337
 Rigidbody2D:
   serializedVersion: 4
@@ -309,6 +308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5883435885482399557}
   - component: {fileID: 7975498529766952702}
+  - component: {fileID: 7468004249683972368}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.83
   m_Color: {r: 0.5471698, g: 0.42601514, b: 0.2761659, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.2
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 0000000023da1c7763e5b7fb8585cccf
   m_LightCookieSprite: {fileID: 0}
@@ -371,3 +371,19 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &7468004249683972368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8534425864151291564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4307f2715247db84c8a08ccd2e8daf3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _light: {fileID: 7975498529766952702}
+  _min: 1
+  _max: 2
+  _default: 1.2

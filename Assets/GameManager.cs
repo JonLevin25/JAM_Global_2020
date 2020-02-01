@@ -3,18 +3,23 @@ using System.Collections;
 using System.Linq;
 using Character.Scripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Managers")]
     [SerializeField] private PlayerScript player;
     [SerializeField] private WaterLevelController waterLevelController;
     [SerializeField] private PipeManager pipeManager;
     [SerializeField] private CorkManager corkManager;
     [SerializeField] private GameOverController gameOverUI;
 
+    [Header("Level references")]
+    [SerializeField] private Pipe _firstPipe;
+
+    [FormerlySerializedAs("firstCorkSpawnTime")]
     [Header("Game Settings")]
-    [SerializeField] private float firstCorkSpawnTime;
+    [SerializeField] private float firstPipeBreakTime;
     [SerializeField] private float fixToNextCorkTime;
     [SerializeField] private float floorFloodToNextCorkTime;
     [SerializeField] private float corkToPipeBurstTime;
@@ -38,8 +43,9 @@ public class GameManager : MonoBehaviour
         WaterDrown.OnDrowned += OnDrowned;
         WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
         
-        yield return new WaitForSeconds(firstCorkSpawnTime);
-        StartCoroutine(LeakPipe(0));
+        yield return new WaitForSeconds(firstPipeBreakTime);
+        pipeManager.LeakPipe(_firstPipe);
+        // StartCoroutine(LeakPipe(0));
     }
 
     private void OnDestroy()
