@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Character.Scripts;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -106,11 +104,18 @@ public class GameManager : MonoBehaviour
     private IEnumerator LeakPipe(params int[] fromFloors)
     {
         Debug.Log($"Choosing Random Leak + Cork from floors: {string.Join(", ", fromFloors)}");
-        var corkSpawner = corkManager.GetRandomSpawner(fromFloors);
-        corkSpawner.Spawn();
+
+        var playerHoldingCork = player.currentCork; 
+        if (!playerHoldingCork)
+        {
+            var corkSpawner = corkManager.GetRandomSpawner(fromFloors);
+            corkSpawner.Spawn();
+            
+            // If cork spawned - make sure pipe is on same floor and wait
+            fromFloors = new[] { corkSpawner.GetFloor()};
+            yield return new WaitForSeconds(corkToPipeBurstTime);
+        }
         
-        var floor = corkSpawner.GetFloor();
-        yield return new WaitForSeconds(corkToPipeBurstTime);
-        pipeManager.LeakRandomPipe(floor);
+        pipeManager.LeakRandomPipe(fromFloors);
     }
 }
