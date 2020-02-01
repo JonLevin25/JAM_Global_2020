@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        pipeManager.OnPipeFixed -= OnPipeFixed;
+        if(pipeManager)
+            pipeManager.OnPipeFixed -= OnPipeFixed;
         WaterDrown.OnDrowned -= OnDrowned;
         WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
     }
