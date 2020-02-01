@@ -21,6 +21,7 @@ namespace Character.Scripts.States
             player.ladder = 0;
             
             player.animator.SetTrigger(Dead);
+            player.animator.Play("Die");
             player.deathAudio.Play();
 
             player.flashLight.SetActive(false);
