@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverButton: {fileID: 672521238}
-  restartSceneIndex: 0
+  restartSceneIndex: 1
 --- !u!223 &1960938466542132292
 Canvas:
   m_ObjectHideFlags: 0
