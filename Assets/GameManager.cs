@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using Character.Scripts;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
@@ -16,10 +17,14 @@ public class GameManager : MonoBehaviour
 
     [Header("Level references")]
     [SerializeField] private Pipe _firstPipe;
+    [SerializeField] private CorkSpawner _firstCorkSpawner;
 
     [FormerlySerializedAs("firstCorkSpawnTime")]
     [Header("Game Settings")]
     [SerializeField] private float firstPipeBreakTime;
+    [SerializeField] private float firstCorkSpawnTime;
+    
+    [Space]
     [SerializeField] private float fixToNextCorkTime;
     [SerializeField] private float floorFloodToNextCorkTime;
     [SerializeField] private float corkToPipeBurstTime;
@@ -37,15 +42,15 @@ public class GameManager : MonoBehaviour
         gameOverUI.gameObject.SetActive(false);
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
         pipeManager.OnPipeFixed += OnPipeFixed;
         WaterDrown.OnDrowned += OnDrowned;
         WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
-        
-        yield return new WaitForSeconds(firstPipeBreakTime);
-        pipeManager.LeakPipe(_firstPipe);
-        // StartCoroutine(LeakPipe(0));
+
+        StartCoroutine(SpawnCorkAfter(_firstCorkSpawner, firstCorkSpawnTime));
+        StartCoroutine(LeakPipeAfter(_firstPipe, firstPipeBreakTime));
+        // StartCoroutine(LeakFlow(0));
     }
 
     private void OnDestroy()
@@ -79,7 +84,7 @@ public class GameManager : MonoBehaviour
     private void OnPipeFixed(Pipe pipe)
     {
         Debug.Log($"OnPipeFixed({pipe.name})");
-        StartCoroutine(LeakPipeAfter(fixToNextCorkTime));
+        StartCoroutine(StartLeakFlow(fixToNextCorkTime));
     }
 
     private void OnFloorFlooded(int floor)
@@ -89,7 +94,7 @@ public class GameManager : MonoBehaviour
         
         pipeManager.ClosePipesOnFloor(floor);
         StartCoroutine(FlashFloodFloorWhenReady(floor));
-        StartCoroutine(LeakPipeAfter(floorFloodToNextCorkTime));
+        StartCoroutine(StartLeakFlow(floorFloodToNextCorkTime));
     }
 
     public IEnumerator FlashFloodFloorWhenReady(int floor)
@@ -123,7 +128,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator LeakPipeAfter(float delay)
+    private IEnumerator StartLeakFlow(float delay)
     {
         yield return new WaitForSeconds(delay);
         var highestFlooded = waterLevelController.HighestFloodedFloor;
@@ -132,15 +137,15 @@ public class GameManager : MonoBehaviour
         var topFloor = FloorHelper.Instance.TopFloor;
         if (highestFlooded == topFloor - 1)
         {
-            StartCoroutine(LeakPipe(topFloor));
+            StartCoroutine(LeakFlow(topFloor));
         }
         else
         {
-            StartCoroutine(LeakPipe(highestFlooded + 1, highestFlooded + 2));
+            StartCoroutine(LeakFlow(highestFlooded + 1, highestFlooded + 2));
         }
     }
 
-    private IEnumerator LeakPipe(params int[] fromFloors)
+    private IEnumerator LeakFlow(params int[] fromFloors)
     {
         Debug.Log($"Choosing Random Leak + Cork from floors: {string.Join(", ", fromFloors)}");
 
@@ -169,5 +174,17 @@ public class GameManager : MonoBehaviour
         }
         
         pipeManager.LeakRandomPipe(fromFloors);
+    }
+
+    private static IEnumerator SpawnCorkAfter(CorkSpawner spawner, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        spawner.Spawn();
+    }
+
+    private IEnumerator LeakPipeAfter(Pipe pipe, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        pipeManager.LeakPipe(pipe);
     }
 }
