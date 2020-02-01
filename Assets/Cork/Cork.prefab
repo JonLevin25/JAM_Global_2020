@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hardCollider: {fileID: 6307342417441599211}
+  PlaySoundOnlyOnce: 0
 --- !u!50 &5777654193631583337
 Rigidbody2D:
   serializedVersion: 4

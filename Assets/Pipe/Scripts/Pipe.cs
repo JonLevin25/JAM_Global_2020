@@ -52,7 +52,8 @@ public class Pipe : MonoBehaviour
 
     [SerializeField] private ParticleSystem lightFlowParticles;
     [SerializeField] private ParticleSystem heavyFlowParticles;
-    
+    [SerializeField] private AudioClip FixSound;
+    [SerializeField] float _delayBeforeFlowStarts = 2f;
     private Animator _myAnim;
     private SpriteRenderer _rend;
     private AudioSource _Audio;
@@ -81,7 +82,7 @@ public class Pipe : MonoBehaviour
     {
         if (_flowRate > 0)
         {
-            Debug.Log($"Pipe {name} Increasing water!");
+     //       Debug.Log($"Pipe {name} Increasing water!");
             WaterLevelController.Instance.IncreaseWaterLevel(_flowRate * Time.deltaTime);
         }
         if(_LastLeakingStatus!=_CurrentLeakingStatus)
@@ -102,10 +103,11 @@ public class Pipe : MonoBehaviour
 
     public void StartFlow()
     {
-        _flowRoutine = StartCoroutine(FlowRoutine());
         _isLeaking = true;
-        _Audio.Play();
         lightFlowParticles?.Play();
+      //  Debug.Log("starting flow");
+        _flowRoutine = StartCoroutine(FlowRoutine());
+
     }
 
     public void StopFlow()
@@ -114,13 +116,15 @@ public class Pipe : MonoBehaviour
         _flowRate = 0;
         _rend.color = Color.white;
         _isLeaking = false;
-        _Audio.Stop();
+        PlayAudio(FixSound, false);
         lightFlowParticles?.Stop();
         heavyFlowParticles?.Stop();
     }
 
     private IEnumerator FlowRoutine()
     {
+       // Debug.Log("starting flow routine");
+
         var startTime = Time.time;
         for (var i = 0; i < phases.Length; i++)
         {
@@ -136,12 +140,14 @@ public class Pipe : MonoBehaviour
         }
     }
 
+
+
     private void SetPhase(FlowPhase phase, int i)
     {
+
         _flowRate = phase.rate;
-        _Audio.clip = phase.FlowSound;
-        _Audio.loop = true;
-        _Audio.Play();
+      //  Debug.Log("setting phase " + i);
+        StartCoroutine(PlayAudioCurr(phase.FlowSound, i));
 
         if (i > 0)
         {
@@ -154,9 +160,34 @@ public class Pipe : MonoBehaviour
         }
     }
 
+
+    private IEnumerator PlayAudioCurr(AudioClip clip, int phase)
+    {
+        Debug.Log("started audio curr - phase "+ phase);
+        if (phase==0)
+        {
+            Debug.Log("playing burst");
+
+            _Audio.Play();
+            yield return new WaitForSeconds(_delayBeforeFlowStarts);
+        }
+        Debug.Log("playing clip for phase"+ phase);
+        PlayAudio(clip);
+        yield return null;
+    }
+
+    private void PlayAudio(AudioClip clip, bool loop=true)
+    {
+        Debug.Log("started audio");
+        if (!clip) { _Audio.Stop(); return; }
+        _Audio.clip = clip;
+        _Audio.loop = loop;
+        _Audio.Play();
+    }
+
     public void SetPipeState(LeakState state)
     {
         _CurrentLeakingStatus = (int)state;
-
     }
+
 }
