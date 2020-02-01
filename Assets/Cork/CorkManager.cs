@@ -6,6 +6,8 @@ using UnityEngine;
 public class CorkManager : MonoBehaviour
 {
     private IReadOnlyList<IReadOnlyList<CorkSpawner>> _corksByFloor;
+    private int _lastCorkFloor;
+    public CorkSpawner LastCorkSpawnerReturned { get; private set; }
 
     private void Start()
     {
@@ -16,10 +18,16 @@ public class CorkManager : MonoBehaviour
 
     public void SpawnRandomCork(params int[] fromFloors)
     {
+        var cork = GetRandomSpawner(fromFloors);
+        cork.Spawn();
+    }
+
+    public CorkSpawner GetRandomSpawner(params int[] fromFloors)
+    {
         if (fromFloors.Length == 0)
         {
-            Debug.LogError($"{GetType()}.{nameof(SpawnRandomCork)} called with no floors!");
-            return;
+            Debug.LogError($"{GetType()}.{nameof(GetRandomSpawner)} called with no floors!");
+            return null;
         }
         
         var allPipesOnFloors = fromFloors.SelectMany(i => _corksByFloor[i]);
@@ -27,16 +35,20 @@ public class CorkManager : MonoBehaviour
 
         if (relevantPipes.Length == 0)
         {
-            Debug.Log($"{GetType()}.{nameof(SpawnRandomCork)}: no relevant found!");
-            return;
+            Debug.Log($"{GetType()}.{nameof(GetRandomSpawner)}: no relevant found!");
+            return null;
         }
         
         var idx = Random.Range(0, relevantPipes.Length - 1);
-        var selected = relevantPipes[idx];
+        var selectedSpawner = relevantPipes[idx];
         
-        Debug.Log($"{GetType()}.{nameof(SpawnRandomCork)}: selected ({selected.name})");
-        selected.Spawn();
+        Debug.Log($"{GetType()}.{nameof(GetRandomSpawner)}: selected ({selectedSpawner.name})");
+
+        LastCorkSpawnerReturned = selectedSpawner;
+        return selectedSpawner;
     }
+
+
     private bool CorkFilterCondition(CorkSpawner arg)
     {
         return true; // Don't filter corks right now
