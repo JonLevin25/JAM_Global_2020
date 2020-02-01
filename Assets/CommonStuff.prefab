@@ -342,7 +342,9 @@ MonoBehaviour:
   corkManager: {fileID: 9215001842640664501}
   gameOverUI: {fileID: 7628860648979139800}
   _firstPipe: {fileID: 0}
-  firstPipeBreakTime: 5
+  _firstCorkSpawner: {fileID: 0}
+  firstPipeBreakTime: 3
+  firstCorkSpawnTime: 3.4
   fixToNextCorkTime: 3
   floorFloodToNextCorkTime: 3
   corkToPipeBurstTime: 2.5
