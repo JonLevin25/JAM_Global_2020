@@ -23,9 +23,11 @@ public class WaterLevelController : MonoBehaviour
     {
         get
         {
-            var waterLevel = FloorHelper.Instance.GetFloor(WorldWaterLevel);
-            var naiveFloor =  Mathf.FloorToInt(waterLevel - 0.5f); // Return the last floor whose more than half flooded
-            return Mathf.Max(naiveFloor, 0);
+            var waterFloor = FloorHelper.Instance.GetFloor(WorldWaterLevel);
+            if (waterFloor < 0) return -1;
+            
+            return Mathf.FloorToInt(waterFloor - 0.5f); // Return the last floor whose more than half flooded
+            
         }
     }
 

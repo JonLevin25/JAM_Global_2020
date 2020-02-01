@@ -135,6 +135,7 @@ public class PipeManager : MonoBehaviour
         foreach (var pipe in _pipesByFloor[floor])
         {
             pipe.StopFlow();
+            pipe.SetPipeState(LeakState.NoLeak);
         }
     }
 }

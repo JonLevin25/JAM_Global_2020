@@ -89,12 +89,22 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         var highestFlooded = waterLevelController.HighestFloodedFloor;
+        
 
-        LeakPipe(highestFlooded + 1, highestFlooded + 2);
+        var topFloor = FloorHelper.Instance.TopFloor;
+        if (highestFlooded == topFloor - 1)
+        {
+            LeakPipe(topFloor);
+        }
+        else
+        {
+            LeakPipe(highestFlooded + 1, highestFlooded + 2);
+        }
     }
 
     private void LeakPipe(params int[] fromFloors)
     {
+        Debug.Log($"Choosing Random Leak + Cork from floors: {string.Join(", ", fromFloors)}");
         pipeManager.LeakRandomPipe(fromFloors);
         corkManager.SpawnRandomCork(fromFloors);
     }
