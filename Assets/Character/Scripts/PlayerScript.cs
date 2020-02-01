@@ -157,8 +157,10 @@ namespace Character.Scripts
 					Transform corkTransform;
 					(corkTransform = currentCork.transform).SetParent(corkPivot);
 					corkTransform.parent = corkPivot;
+					corkTransform.rotation = Quaternion.identity; // Reset rotation
 					Physics2D.IgnoreCollision(collider, currentCork.hardCollider);
 					currentCork.rigidbody.bodyType = RigidbodyType2D.Kinematic;
+					currentCork.rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
 					corkTransform.localPosition = Vector3.zero;
 					currentCork.player = this;
 				}

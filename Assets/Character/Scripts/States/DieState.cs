@@ -15,7 +15,7 @@ namespace Character.Scripts.States
         {
             // player.GetComponent<PlayerInput>().enabled = false;
             player.GetComponent<PlayerInput>().DeactivateInput();
-            player.animator.SetTrigger(Dead);
+            player.animator.SetBool(Dead, true);
         }
 
         public override void ExecuteUpdate()
