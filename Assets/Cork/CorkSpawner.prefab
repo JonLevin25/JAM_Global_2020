@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   corkPrefab: {fileID: 7390866389956807000, guid: bd9af60184eb21e498a3ff8c4708ce2b,
     type: 3}
+  randomForcePower: 4
+  randomAngleRange: {x: 0, y: 180}
 --- !u!212 &-7143720778120481306
 SpriteRenderer:
   m_ObjectHideFlags: 0
