@@ -50,7 +50,8 @@ public class Pipe : MonoBehaviour
     [SerializeField] private bool _debug;
     [SerializeField] private Color _debugSealedColor;
 
-    [SerializeField] private ParticleSystem particleSystem;
+    [SerializeField] private ParticleSystem lightFlowParticles;
+    [SerializeField] private ParticleSystem heavyFlowParticles;
     
     private Animator _myAnim;
     private SpriteRenderer _rend;
@@ -104,7 +105,7 @@ public class Pipe : MonoBehaviour
         _flowRoutine = StartCoroutine(FlowRoutine());
         _isLeaking = true;
         _Audio.Play();
-        particleSystem?.Play();
+        lightFlowParticles?.Play();
     }
 
     public void StopFlow()
@@ -114,15 +115,16 @@ public class Pipe : MonoBehaviour
         _rend.color = Color.white;
         _isLeaking = false;
         _Audio.Stop();
-        particleSystem?.Stop();
-
+        lightFlowParticles?.Stop();
+        heavyFlowParticles?.Stop();
     }
 
     private IEnumerator FlowRoutine()
     {
         var startTime = Time.time;
-        foreach (var phase in phases)
+        for (var i = 0; i < phases.Length; i++)
         {
+            var phase = phases[i];
             var timeFromFromStart = Time.time - startTime;
             while (timeFromFromStart < phase.startTime)
             {
@@ -130,17 +132,22 @@ public class Pipe : MonoBehaviour
                 yield return null;
             }
 
-            SetPhase(phase);
-            
+            SetPhase(phase, i);
         }
     }
 
-    private void SetPhase(FlowPhase phase)
+    private void SetPhase(FlowPhase phase, int i)
     {
         _flowRate = phase.rate;
         _Audio.clip = phase.FlowSound;
         _Audio.loop = true;
         _Audio.Play();
+
+        if (i > 0)
+        {
+            heavyFlowParticles?.Play();
+        }
+        
         if (_debug)
         {
             _rend.color = phase.testColor;
