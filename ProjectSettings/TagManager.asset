@@ -8,6 +8,7 @@ TagManager:
   - Cork
   - Pipe
   - Ground
+  - Water
   layers:
   - Default
   - TransparentFX
