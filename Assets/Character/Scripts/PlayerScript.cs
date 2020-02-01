@@ -48,6 +48,9 @@ namespace Character.Scripts
 		public AudioSource walkAudio;
 		public AudioSource jumpAudio;
 		public AudioSource ladderAudio;
+		public AudioSource deathAudio;
+		public AudioSource effort1Audio;
+		public AudioSource effort2Audio;
 
 		private void Awake()
 		{
@@ -78,11 +81,17 @@ namespace Character.Scripts
 		{
 			GroundCheck();
 			
-			if (stateMachine.currentState != ladderState && currentLadder != null && ladder != 0)
+			if (stateMachine.currentState != ladderState 
+				&& stateMachine.currentState != dieState 
+				&& currentLadder != null 
+				&& ladder != 0)
 			{
 				stateMachine.ChangeState(ladderState);
 			}
-			else if (stateMachine.currentState != ladderState && stateMachine.currentState != groundState && isGrounded && Time.time - lastTimeJumpState > 0.25f)
+			else if (stateMachine.currentState != ladderState 
+					 && stateMachine.currentState != groundState 
+					 && stateMachine.currentState != dieState 
+					 && isGrounded && Time.time - lastTimeJumpState > 0.25f)
 			{
 				stateMachine.ChangeState(groundState);
 			}
@@ -139,7 +148,9 @@ namespace Character.Scripts
 		
 		public void OnJump(InputValue value)
 		{
-			if (stateMachine.currentState != jumpState && isGrounded)
+			if (stateMachine.currentState != jumpState 
+				&& stateMachine.currentState != dieState 
+				&& isGrounded)
 			{
 				rigidbody.AddForce(Vector2.up * jumpForce);
 				stateMachine.ChangeState(jumpState);
