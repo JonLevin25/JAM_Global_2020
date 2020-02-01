@@ -96,7 +96,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 154667080483455946}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6101633665799684055}
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 0.9882353, b: 0.63529414, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 63e5b7fb8585cccf47b4353563e5b7fbcb7521860000000023da1c77
+  m_ApplyToSortingLayers: 63e5b7fb8585cccf47b4353563e5b7fb0000000023da1c775d4e5ee2
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
@@ -313,6 +313,7 @@ GameObject:
   - component: {fileID: 6101633665799684043}
   - component: {fileID: 6101633665799684042}
   - component: {fileID: 6042737860437781849}
+  - component: {fileID: 1539139318}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -524,6 +525,14 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!81 &1539139318
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6101633665799684053}
+  m_Enabled: 1
 --- !u!1 &8953844603530296953
 GameObject:
   m_ObjectHideFlags: 0
