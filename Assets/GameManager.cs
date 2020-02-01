@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using Character.Scripts;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
@@ -132,7 +130,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         var highestFlooded = waterLevelController.HighestFloodedFloor;
-        
 
         var topFloor = FloorHelper.Instance.TopFloor;
         if (highestFlooded == topFloor - 1)
@@ -179,12 +176,14 @@ public class GameManager : MonoBehaviour
     private static IEnumerator SpawnCorkAfter(CorkSpawner spawner, float delay)
     {
         yield return new WaitForSeconds(delay);
+        Debug.Log("Spawning cork after delay!");
         spawner.Spawn();
     }
 
     private IEnumerator LeakPipeAfter(Pipe pipe, float delay)
     {
         yield return new WaitForSeconds(delay);
+        Debug.Log("Leaking pipe after delay!");
         pipeManager.LeakPipe(pipe);
     }
 }
