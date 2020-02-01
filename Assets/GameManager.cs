@@ -15,12 +15,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameOverController gameOverUI;
 
     [Header("Game Settings")]
-    [FormerlySerializedAs("firstPipeLeakTime")]
     [SerializeField] private float firstCorkSpawnTime;
-    [FormerlySerializedAs("fixToNextLeakTime"), SerializeField] private float fixToNextCorkTime;
-    [FormerlySerializedAs("floorFloodToNextLeakTime")] [SerializeField] private float floorFloodToNextCorkTime;
+    [SerializeField] private float fixToNextCorkTime;
+    [SerializeField] private float floorFloodToNextCorkTime;
     [SerializeField] private float corkToPipeBurstTime;
-    [FormerlySerializedAs("_gameOverDelay")] [SerializeField] private float gameOverDelay;
+    [SerializeField] private float gameOverDelay;
     
 
 
