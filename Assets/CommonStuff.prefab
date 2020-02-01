@@ -193,9 +193,10 @@ MonoBehaviour:
   pipeManager: {fileID: 1275115653230650164}
   corkManager: {fileID: 9215001842640664501}
   gameOverUI: {fileID: 7628860648979139800}
-  firstPipeLeakTime: 2
-  fixToNextLeakTime: 3
-  floorFloodToNextLeakTime: 2
+  firstCorkSpawnTime: 5
+  fixToNextCorkTime: 3
+  floorFloodToNextCorkTime: 3
+  corkToPipeBurstTime: 2.5
   gameOverDelay: 2
 --- !u!1001 &2447331915260722278
 PrefabInstance:
@@ -464,6 +465,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2447331915143206951}
     m_Modifications:
+    - target: {fileID: 576269479089990436, guid: a575e57f99fb71840914430b02e7696d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.4299994
+      objectReference: {fileID: 0}
+    - target: {fileID: 576269479089990436, guid: a575e57f99fb71840914430b02e7696d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.75
+      objectReference: {fileID: 0}
     - target: {fileID: 576269479362225908, guid: a575e57f99fb71840914430b02e7696d,
         type: 3}
       propertyPath: m_Name

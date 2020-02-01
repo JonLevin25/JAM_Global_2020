@@ -15,9 +15,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameOverController gameOverUI;
 
     [Header("Game Settings")]
-    [SerializeField] private float firstPipeLeakTime;
-    [SerializeField] private float fixToNextLeakTime;
-    [SerializeField] private float floorFloodToNextLeakTime;
+    [FormerlySerializedAs("firstPipeLeakTime")]
+    [SerializeField] private float firstCorkSpawnTime;
+    [FormerlySerializedAs("fixToNextLeakTime"), SerializeField] private float fixToNextCorkTime;
+    [FormerlySerializedAs("floorFloodToNextLeakTime")] [SerializeField] private float floorFloodToNextCorkTime;
+    [SerializeField] private float corkToPipeBurstTime;
     [FormerlySerializedAs("_gameOverDelay")] [SerializeField] private float gameOverDelay;
     
 
@@ -38,8 +40,8 @@ public class GameManager : MonoBehaviour
         WaterDrown.OnDrowned += OnDrowned;
         WaterLevelController.Instance.OnFloorFlooded += OnFloorFlooded;
         
-        yield return new WaitForSeconds(firstPipeLeakTime);
-        LeakPipe(0);
+        yield return new WaitForSeconds(firstCorkSpawnTime);
+        StartCoroutine(LeakPipe(0));
     }
 
     private void OnDestroy()
@@ -73,7 +75,7 @@ public class GameManager : MonoBehaviour
     private void OnPipeFixed(Pipe pipe)
     {
         Debug.Log($"OnPipeFixed({pipe.name})");
-        StartCoroutine(LeakPipeAfter(fixToNextLeakTime));
+        StartCoroutine(LeakPipeAfter(fixToNextCorkTime));
     }
 
     private void OnFloorFlooded(int floor)
@@ -82,7 +84,7 @@ public class GameManager : MonoBehaviour
         if (floor == FloorHelper.Instance.TopFloor) return; // Player's gonna die soon anyway
         
         pipeManager.ClosePipesOnFloor(floor);
-        StartCoroutine(LeakPipeAfter(floorFloodToNextLeakTime));
+        StartCoroutine(LeakPipeAfter(floorFloodToNextCorkTime));
     }
 
     private IEnumerator LeakPipeAfter(float delay)
@@ -94,18 +96,22 @@ public class GameManager : MonoBehaviour
         var topFloor = FloorHelper.Instance.TopFloor;
         if (highestFlooded == topFloor - 1)
         {
-            LeakPipe(topFloor);
+            StartCoroutine(LeakPipe(topFloor));
         }
         else
         {
-            LeakPipe(highestFlooded + 1, highestFlooded + 2);
+            StartCoroutine(LeakPipe(highestFlooded + 1, highestFlooded + 2));
         }
     }
 
-    private void LeakPipe(params int[] fromFloors)
+    private IEnumerator LeakPipe(params int[] fromFloors)
     {
         Debug.Log($"Choosing Random Leak + Cork from floors: {string.Join(", ", fromFloors)}");
-        pipeManager.LeakRandomPipe(fromFloors);
-        corkManager.SpawnRandomCork(fromFloors);
+        var corkSpawner = corkManager.GetRandomSpawner(fromFloors);
+        corkSpawner.Spawn();
+        
+        var floor = corkSpawner.GetFloor();
+        yield return new WaitForSeconds(corkToPipeBurstTime);
+        pipeManager.LeakRandomPipe(floor);
     }
 }
