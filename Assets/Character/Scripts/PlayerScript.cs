@@ -45,14 +45,14 @@ namespace Character.Scripts
 		[SerializeField] internal GameObject flashLight;
 
 		internal float lastTimeJumpState;
-		AudioSource _audio;
+		internal AudioSource walkAudio;
 
 		private void Awake()
 		{
 			rigidbody = GetComponent<Rigidbody2D>();
 			collider = GetComponent<Collider2D>();
 			animator = GetComponent<Animator>();
-			_audio = GetComponent<AudioSource>();
+			walkAudio = GetComponent<AudioSource>();
 
 
 			stateMachine = ScriptableObject.CreateInstance<StateMachine>();
@@ -128,9 +128,7 @@ namespace Character.Scripts
 
 		public void OnWalk(InputValue value)
 		{
-		
 			walk = value.Get<float>();
-			_audio.enabled = ( walk!= 0);
 		}
 		
 		public void OnLadder(InputValue value)
