@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+#endif
 
 namespace Character.Scripts
 {
@@ -12,6 +15,7 @@ namespace Character.Scripts
       public List<Collider2D> groundCollider2Ds;
    }
    
+   #if UNITY_EDITOR
    class LadderCustomBuildProcessor : IProcessSceneWithReport
    {
       public int callbackOrder { get { return 0; } }
@@ -46,4 +50,5 @@ namespace Character.Scripts
          }
       }
    }
+   #endif
 }
