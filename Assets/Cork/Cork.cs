@@ -10,16 +10,14 @@ public class Cork : MonoBehaviour
     internal PlayerScript player;
     internal Rigidbody2D rigidbody;
     [SerializeField] bool PlaySoundOnlyOnce = false;
-    [SerializeField] AudioClip CollisionSound;
-    [SerializeField] AudioClip PickUpSound;
+    [SerializeField] GameObject CollisionSoundParticle;
 
     bool CanPlaySound = true;
     AudioSource _audio;
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        _audio = gameObject.AddComponent<AudioSource>();
-        _audio.loop = _audio.playOnAwake = false;
+        _audio = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -35,8 +33,7 @@ public class Cork : MonoBehaviour
             }
         }
         else if (other.CompareTag("Player"))
-            PlaySound(PickUpSound);
-
+            _audio.Play();
 
     }
 
@@ -44,17 +41,15 @@ public class Cork : MonoBehaviour
     {
         if (collision.transform.CompareTag("Ground"))
         {
-            if (CanPlaySound)
-                PlaySound(CollisionSound);
+
+            if (CanPlaySound && CollisionSoundParticle)
+            {
+                Instantiate(CollisionSoundParticle, transform.position, Quaternion.identity);
+
+            }
             if (PlaySoundOnlyOnce)
                 CanPlaySound = false;
         }
     }
 
-    void PlaySound(AudioClip clip)
-    {
-        if (!clip) return;
-        _audio.clip = clip;
-        _audio.Play();
-    }
 }

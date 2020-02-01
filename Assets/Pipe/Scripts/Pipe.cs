@@ -163,23 +163,23 @@ public class Pipe : MonoBehaviour
 
     private IEnumerator PlayAudioCurr(AudioClip clip, int phase)
     {
-        Debug.Log("started audio curr - phase "+ phase);
+      //  Debug.Log("started audio curr - phase "+ phase);
         if (phase==0)
         {
-            Debug.Log("playing burst");
+         //   Debug.Log("playing burst");
 
             _Audio.Play();
             yield return new WaitForSeconds(_delayBeforeFlowStarts);
         }
-        Debug.Log("playing clip for phase"+ phase);
+     //   Debug.Log("playing clip for phase"+ phase);
         PlayAudio(clip);
         yield return null;
     }
 
     private void PlayAudio(AudioClip clip, bool loop=true)
     {
-        Debug.Log("started audio");
-        if (!clip) { _Audio.Stop(); return; }
+     //   Debug.Log("started audio");
+        if (!clip) { _Audio.Stop();     return; }
         _Audio.clip = clip;
         _Audio.loop = loop;
         _Audio.Play();

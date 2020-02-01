@@ -4817,7 +4817,7 @@ MonoBehaviour:
   _debugSealedColor: {r: 0.3810326, g: 1, b: 0.3726415, a: 1}
   lightFlowParticles: {fileID: 2348290839894628239}
   heavyFlowParticles: {fileID: 6520665282591425432}
-  FixSound: {fileID: 0}
+  FixSound: {fileID: 8300000, guid: f1ee46aff636f394b93419af6c44b6b8, type: 3}
   _delayBeforeFlowStarts: 2
 --- !u!212 &4101815493905532902
 SpriteRenderer:
