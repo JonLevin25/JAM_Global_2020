@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Character.Scripts.States
@@ -15,7 +16,14 @@ namespace Character.Scripts.States
         {
             // player.GetComponent<PlayerInput>().enabled = false;
             player.GetComponent<PlayerInput>().DeactivateInput();
-            player.animator.SetBool(Dead, true);
+            player.walk = 0;
+            player.rigidbody.velocity = Vector2.zero;
+            player.ladder = 0;
+            
+            player.animator.SetTrigger(Dead);
+            player.deathAudio.Play();
+
+            player.flashLight.SetActive(false);
         }
 
         public override void ExecuteUpdate()
