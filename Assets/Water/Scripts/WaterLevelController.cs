@@ -9,6 +9,9 @@ public class WaterLevelController : MonoBehaviour
 
     [SerializeField] private bool _TEST_setWater;
     [SerializeField] private float _TEST_targetWaterLevel;
+    
+    
+    [SerializeField] private int _TEST_flashFloodLevel;
 
     public static WaterLevelController Instance;
 
@@ -23,14 +26,15 @@ public class WaterLevelController : MonoBehaviour
     {
         get
         {
-            var waterFloor = FloorHelper.Instance.GetFloor(WorldWaterLevel);
+            var waterFloor = FloorHelper.Instance.GetFloorByHeight(WorldWaterLevel);
             if (waterFloor < 0) return -1;
             
             return Mathf.FloorToInt(waterFloor - 0.5f); // Return the last floor whose more than half flooded
-            
         }
     }
 
+    public bool AllFloorsFlooded => HighestFloodedFloor >= FloorHelper.Instance.TopFloor;
+    
     public event Action<int> OnFloorFlooded;
 
     private void Awake()
@@ -72,5 +76,48 @@ public class WaterLevelController : MonoBehaviour
     public void IncreaseWaterLevel(float delta)
     {
         _targetWaterLevel += delta;
+    }
+
+    [ContextMenu("TEST Flash Flood ")]
+    public void TEST_FlashFlood() => FlashFloodLevel(_TEST_flashFloodLevel);
+
+    public void FlashFloodLevel(int level)
+    {
+        Debug.Log($"FlashFlood! floor: ({level})");
+        var topFloorNum = FloorHelper.Instance.TopFloor;
+        if (level >= topFloorNum)
+        {
+            FlashFloodFinalFloor(topFloorNum);
+        }
+        else
+        {
+            var nextLevel = level + 1;
+            var worldTargetLevel = FloorHelper.Instance.GetFloorByIndex(nextLevel);
+            _targetWaterLevel = WorldToLocalWaterLevel(worldTargetLevel);
+        }
+    }
+
+    private void FlashFloodFinalFloor(int topFloorNum)
+    {
+        Debug.Log($"FlashFlood final floor! ({topFloorNum})");
+        var topFloor = FloorHelper.Instance.GetFloorByIndex(topFloorNum);
+        var beforeTopFloor = FloorHelper.Instance.GetFloorByIndex(topFloorNum - 1);
+
+        var floorDelta = topFloor - beforeTopFloor;
+        if (_currWaterLevel > FloorHelper.Instance.TopFloor)
+        {
+            var worldTargetLevel = topFloorNum + 2 * floorDelta;
+            _targetWaterLevel = WorldToLocalWaterLevel(worldTargetLevel);
+        }
+    }
+
+    private float WorldToLocalWaterLevel(float worldHeight)
+    {
+        return worldHeight - _water.transform.position.y;
+    }
+
+    public bool IsFloorFlooded(int floor)
+    {
+        return HighestFloodedFloor >= floor;
     }
 }

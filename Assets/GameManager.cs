@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using Character.Scripts;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float floorFloodToNextCorkTime;
     [SerializeField] private float corkToPipeBurstTime;
     [SerializeField] private float gameOverDelay;
-    
+    [SerializeField] private float _flashFloodHeightOnLadder = 0.2f;
 
 
     private void Awake()
@@ -81,7 +82,39 @@ public class GameManager : MonoBehaviour
         if (floor == FloorHelper.Instance.TopFloor) return; // Player's gonna die soon anyway
         
         pipeManager.ClosePipesOnFloor(floor);
+        StartCoroutine(FlashFloodFloorWhenReady(floor));
         StartCoroutine(LeakPipeAfter(floorFloodToNextCorkTime));
+    }
+
+    public IEnumerator FlashFloodFloorWhenReady(int floor)
+    {
+        bool Condition()
+        {
+            var playerOnLadder = player.currentLadder != null;
+            var playerFloor = player.GetFloorWithPercent();
+
+            var minLadderHeight = floor + _flashFloodHeightOnLadder;
+            var playerHighEnoughOnLadder = playerOnLadder &&  playerFloor > minLadderHeight;
+            var playerAboveFloor = player.GetFloor() > floor + 1;
+            
+            return playerHighEnoughOnLadder || playerAboveFloor;
+        }
+
+        // If top floor - flood immediately
+        if (floor == FloorHelper.Instance.TopFloor)
+        {
+            WaterLevelController.Instance.FlashFloodLevel(floor);
+        }
+        
+        while (true)
+        {
+            if (Condition())
+            {
+                WaterLevelController.Instance.FlashFloodLevel(floor);
+                break;
+            }
+            yield return null;
+        }
     }
 
     private IEnumerator LeakPipeAfter(float delay)
@@ -114,6 +147,19 @@ public class GameManager : MonoBehaviour
             // If cork spawned - make sure pipe is on same floor and wait
             fromFloors = new[] { corkSpawner.GetFloor()};
             yield return new WaitForSeconds(corkToPipeBurstTime);
+        }
+
+        // Filter any floors that are already flooded
+        fromFloors = fromFloors
+            .Where(floor => !waterLevelController.IsFloorFlooded(floor))
+            .ToArray();
+
+        // If all floors we wanted were flooded, spawn in first non-flooded
+        if (fromFloors.Length == 0)
+        {
+            // If all floors flooded, fuck it
+            if (waterLevelController.AllFloorsFlooded) yield break;
+            fromFloors = new[] {waterLevelController.HighestFloodedFloor + 1};
         }
         
         pipeManager.LeakRandomPipe(fromFloors);

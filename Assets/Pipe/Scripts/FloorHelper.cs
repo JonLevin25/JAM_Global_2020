@@ -58,10 +58,16 @@ public class FloorHelper : MonoBehaviour
         var pos = component.transform.position;
         var yPos = pos.y;
 
-        return GetFloor(yPos);
+        return GetFloorByHeight(yPos);
     }
 
-    public float GetFloor(float yPos)
+    public float GetFloorByIndex(int i)
+    {
+        if (i < 0 || i >= _floors.Length) return -1;
+        return _floors[i];
+    }
+
+    public float GetFloorByHeight(float yPos)
     {
         // if below ground floor
         if (yPos < _floors[0]) return -1;
