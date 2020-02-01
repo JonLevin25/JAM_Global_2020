@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using Character.Scripts.States;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using Random = System.Random;
 
 namespace Character.Scripts
 {
@@ -66,6 +68,11 @@ namespace Character.Scripts
 			dieState = new DieState(this);
 			
 			stateMachine.ChangeState(groundState);
+		}
+
+		private void Start()
+		{
+			StartCoroutine(EffortSounds());
 		}
 
 		private void Update()
@@ -180,6 +187,11 @@ namespace Character.Scripts
 					currentCork.player = this;
 				}
 			}
+
+			if (other.CompareTag("Water"))
+			{
+				inEffort = true;
+			}
 		}
 
 		private void OnTriggerExit2D(Collider2D other)
@@ -187,6 +199,10 @@ namespace Character.Scripts
 			if (other == currentLadder)
 			{
 				currentLadder = null;
+			}
+			if (other.CompareTag("Water"))
+			{
+				inEffort = false;
 			}
 		}
 
@@ -198,6 +214,20 @@ namespace Character.Scripts
 		public void LadderSoundPlay()
 		{
 			ladderAudio.PlayOneShot(ladderAudio.clip);
+		}
+
+		internal bool inEffort;
+		public IEnumerator EffortSounds()
+		{
+			while (true)
+			{
+				yield return new WaitUntil(() => inEffort);
+
+				AudioSource effortAudio = UnityEngine.Random.Range(0, 2) == 0 ? effort1Audio : effort2Audio;
+				effortAudio.Play();
+				
+				yield return new WaitForSeconds(effortAudio.clip.length);
+			}
 		}
 	}
 }

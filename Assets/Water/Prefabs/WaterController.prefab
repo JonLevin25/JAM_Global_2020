@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 8670798980710593090}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -261,6 +261,7 @@ MonoBehaviour:
   _water: {fileID: 8670798981927136844}
   _TEST_setWater: 0
   _TEST_targetWaterLevel: 1
+  _TEST_flashFloodLevel: 0
 --- !u!50 &8670798981720617746
 Rigidbody2D:
   serializedVersion: 4
