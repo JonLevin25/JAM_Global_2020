@@ -17,6 +17,7 @@ public class PipeManager : MonoBehaviour
     private readonly Stack<Pipe> _fixedPipes = new Stack<Pipe>();
     private readonly HashSet<Pipe> _currLeakingPipes = new HashSet<Pipe>();
 
+    public Pipe LastPipeLeaked { get; private set; }
     public event Action<Pipe> OnPipeFixed;
 
     // private void Awake()
@@ -73,10 +74,18 @@ public class PipeManager : MonoBehaviour
 
     public void LeakRandomPipe(params int[] fromFloors)
     {
+        var pipe = GetRandomPipe(fromFloors);
+        if (pipe == null) return;
+        
+        LeakPipe(pipe);
+    }
+
+    public Pipe GetRandomPipe(params int[] fromFloors)
+    {
         if (fromFloors.Length == 0)
         {
             Debug.LogError("LeakRandomPipe called with no floors!");
-            return;
+            return null;
         }
         
         var allPipesOnFloors = fromFloors.SelectMany(i => _pipesByFloor[i]);
@@ -84,19 +93,27 @@ public class PipeManager : MonoBehaviour
 
         if (relevantPipes.Length == 0)
         {
-            Debug.Log($"{GetType()}.{nameof(LeakRandomPipe)}: no relevant pipes found!");
-            return;
+            Debug.Log($"{GetType()}.{nameof(GetRandomPipe)}: no relevant pipes found!");
+            return null;
         }
         
         var pipeIdx = Random.Range(0, relevantPipes.Length - 1);
         var selectedPipe = relevantPipes[pipeIdx];
+
         
-        Debug.Log($"{GetType()}.{nameof(LeakRandomPipe)}: selected pipe ({selectedPipe.name})");
-        LeakPipe(selectedPipe);
+        Debug.Log($"{GetType()}.{nameof(GetRandomPipe)}: selected pipe ({selectedPipe.name})");
+        return selectedPipe;
     }
 
-    private void LeakPipe(Pipe pipe)
+    public void LeakPipe(Pipe pipe)
     {
+        if (pipe == null)
+        {
+            Debug.LogError($"{GetType()}.{nameof(LeakPipe)}: Pipe is null!");
+            return;
+        }
+        
+        LastPipeLeaked = pipe;
         pipe.StartFlow();
         _currLeakingPipes.Add(pipe);
         SetPipeState(pipe, LeakState.Leaking);
