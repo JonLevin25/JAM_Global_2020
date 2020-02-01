@@ -15,6 +15,7 @@ namespace Character.Scripts.States
             player.movementAditionAction += player.SetHorizontalMovement;
             player.animator.SetTrigger(Jump);
             player.lastTimeJumpState = Time.time;
+            player.jumpAudio.Play();
         }
 
         public override void ExecuteUpdate()
