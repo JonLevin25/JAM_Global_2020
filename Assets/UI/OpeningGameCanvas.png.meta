@@ -1,7 +1,40 @@
 fileFormatVersion: 2
 guid: ce6ba2c89cf76334fba7e19a3941e390
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3370243226361365394
+    second: Title
+  - first:
+      213: -6725585066344173788
+    second: Start
+  - first:
+      213: 6871707369177890490
+    second: Options
+  - first:
+      213: -3406576653267361588
+    second: Back
+  - first:
+      213: 6612439170740224514
+    second: Restart
+  - first:
+      213: 3370243226361365394
+    second: Start
+  - first:
+      213: -6725585066344173788
+    second: Title_Menu
+  - first:
+      213: 6871707369177890490
+    second: Restart
+  - first:
+      213: -3406576653267361588
+    second: Options
+  - first:
+      213: -1739274644678920572
+    second: Back
+  - first:
+      213: -3122315306449907232
+    second: Headphones_Recommended
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -40,7 +73,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 0
   spriteMeshType: 1
   alignment: 0
@@ -108,7 +141,133 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Start
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 106
+        width: 80
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2938fe9ab5285ce20800000000000000
+      internalID: 3370243226361365394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Title_Menu
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 61
+        width: 142
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42f22ed040ce9a2a0800000000000000
+      internalID: -6725585066344173788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Restart
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 83
+        width: 80
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abe3844c1753d5f50800000000000000
+      internalID: 6871707369177890490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Options
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 60
+        width: 80
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc02cd9259869b0d0800000000000000
+      internalID: -3406576653267361588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Back
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 37
+        width: 80
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 486b11dfceadcd7e0800000000000000
+      internalID: -1739274644678920572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Headphones_Recommended
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 25
+        width: 133
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e1d94285ce4ba4d0800000000000000
+      internalID: -3122315306449907232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
